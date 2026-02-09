@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Privacidade — HART</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #fffff3; --card: #141d14; --accent: #196d46; --text: #000000; --text-dim: #000000; }
+        
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; margin: 0; }
+        
+        .noise { position: fixed; inset: 0; pointer-events: none; opacity: 0.03; z-index: 9999; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256'/%3E"); }
+        
+        /* Navbar ajustada */
+        nav { 
+            background: #182813; 
+            backdrop-filter: blur(12px); 
+            padding: 16px 0; 
+            border-bottom: 1px solid rgba(255,255,255,0.05); 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+        }
+
+        .container { max-width: 850px; margin: 0 auto; padding: 0 30px; }
+
+        /* Estilo do Logo como Botão */
+        .logo { 
+            height: 32px; 
+            width: auto;
+            display: block;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            /* Removido o filter: brightness(0) invert(1) para mostrar as cores reais */
+        }
+
+        .logo:hover {
+            transform: scale(1.05); /* Efeito de crescimento ao passar o mouse */
+            opacity: 0.9;
+        }
+
+        .logo:active {
+            transform: scale(0.98); /* Efeito de clique */
+        }
+
+        .content { padding: 80px 0; }
+        h1 { font-size: 36px; font-weight: 700; color: #000000; margin-bottom: 10px; letter-spacing: -1px; }
+        .last-update { color: var(--accent); font-size: 13px; font-weight: 600; text-transform: uppercase; margin-bottom: 50px; display: block; }
+        h2 { font-size: 20px; font-weight: 600; color: #000000; margin-top: 40px; margin-bottom: 15px; border-left: 3px solid var(--accent); padding-left: 15px; }
+        p, li { color: var(--text-dim); font-size: 16px; margin-bottom: 15px; }
+        strong { color: var(--text); }
+        footer { padding: 50px 0; border-top: 1px solid rgba(0,0,0,0.05); text-align: center; color: var(--text-dim); font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="noise"></div>
+    
+    <nav>
+        <div class="container">
+            <a href="index.html" style="display: inline-block; text-decoration: none;">
+                <img src="Hart_Tipografico_04.png" class="logo" alt="HART Logo">
+            </a>
+        </div>
+    </nav>
+
+    <main class="container content">
+        <h1>Política de Privacidade</h1>
+        <span class="last-update">Atualizado em Fevereiro de 2026</span>
+        
+        <p>Esta Política de Privacidade descreve como a <strong>HART</strong> coleta, utiliza, armazena e protege os dados pessoais e patrimoniais dos usuários, em conformidade com a legislação vigente (LGPD) e as orientações da ANPD.</p>
+
+        <h2>1. Coleta de Dados</h2>
+        <p>Coletamos apenas os dados necessários para a prestação dos nossos serviços de gestão estratégica de patrimônio, como nome, e-mail, telefone, documentos de propriedade e informações contratuais dos ativos geridos. O uso de cookies é realizado para melhorar a experiência do usuário no dashboard, analisar o tráfego e personalizar conteúdos de análise financeira, sempre respeitando a legislação de proteção de dados.</p>
+
+        <h2>2. Uso dos Dados</h2>
+        <p>Os dados coletados são utilizados para viabilizar a gestão inteligente de imóveis, comunicação com o usuário, cumprimento de obrigações legais, análise de performance (Cap Rate) e aprimoramento dos nossos serviços tecnológicos. Não compartilhamos dados pessoais ou informações sensíveis de portfólio com terceiros sem consentimento, exceto quando estritamente exigido por lei.</p>
+
+        <h2>3. Cookies</h2>
+        <p>Utilizamos cookies essenciais para o funcionamento seguro da plataforma e cookies analíticos para monitoramento de performance de dados, sempre mediante consentimento do usuário. O usuário pode gerenciar suas preferências de cookies nas configurações do navegador a qualquer momento.</p>
+
+        <h2>4. Direitos do Titular</h2>
+        <p>O titular dos dados pode solicitar acesso, correção, exclusão ou portabilidade de seus dados pessoais, bem como revogar o consentimento para o uso de cookies não essenciais através dos nossos canais de atendimento.</p>
+
+        <h2>5. Segurança</h2>
+        <p>Adotamos medidas técnicas de criptografia e padrões administrativos rigorosos para proteger os dados pessoais e informações de ativos contra acessos não autorizados, vazamentos ou incidentes de segurança.</p>
+
+        <h2>6. Contato</h2>
+        <p>Em caso de dúvidas sobre esta política ou sobre o tratamento de dados pessoais, entre em contato pelo e-mail: <strong>contato@hartgestao.com.br</strong>.</p>
+    </main>
+
+    <footer>&copy; 2026 HART. Todos os direitos reservados.</footer>
+</body>
+</html>
