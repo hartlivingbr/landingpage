@@ -1,0 +1,301 @@
+/* ============================================================
+   HART — login.css
+   Estilos específicos da página de login
+   ============================================================ */
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  :root {
+    --dark:  #192318;
+    --green: #2D5A27;
+    --green-muted: #8FB887;
+    --cream: #F5F2EC;
+    --white: #FFFFFF;
+    --border: rgba(0,0,0,0.10);
+    --muted: #8E8E93;
+    --text:  #1C1C1E;
+    --gold:  #D8DB8E;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--dark);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+  }
+
+  /* ── LOGO topo ── */
+  .page-logo {
+    position: fixed;
+    top: 32px; left: 50%; transform: translateX(-50%);
+    z-index: 10;
+    text-decoration: none;
+  }
+  .page-logo img { height: 26px; width: auto; display: block; }
+
+  /* ── CARD ── */
+  .card {
+    width: 100%;
+    max-width: 440px;
+    background: var(--cream);
+    border-radius: 24px;
+    padding: 52px 48px 44px;
+    position: relative;
+    margin-top: 32px;
+  }
+
+  .card-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 18px;
+  }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--dark);
+    letter-spacing: -1.5px;
+    line-height: 1.08;
+    margin-bottom: 10px;
+  }
+  .card-title em {
+    font-style: italic;
+    color: var(--green);
+  }
+
+  .card-sub {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 36px;
+  }
+
+  /* ── FORM ── */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .form-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #555;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+  .form-input {
+    width: 100%;
+    padding: 12px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    background: var(--white);
+    border: 1px solid rgba(0,0,0,0.10);
+    border-radius: 11px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .form-input::placeholder { color: #C0C0C5; }
+  .form-input:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px rgba(45,90,39,0.10);
+  }
+
+  /* password wrap */
+  .input-wrap { position: relative; }
+  .input-wrap .form-input { padding-right: 44px; }
+  .input-eye {
+    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; cursor: pointer; color: var(--muted);
+    display: flex; align-items: center; padding: 0; transition: color 0.2s;
+  }
+  .input-eye:hover { color: var(--text); }
+  .input-eye svg { width: 17px; height: 17px; }
+
+  .form-row-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    margin-top: 2px;
+  }
+  .remember-wrap {
+    display: flex; align-items: center; gap: 7px; cursor: pointer;
+  }
+  .remember-wrap input[type="checkbox"] {
+    width: 15px; height: 15px; accent-color: var(--green); cursor: pointer;
+  }
+  .remember-wrap span { font-size: 13px; color: var(--muted); }
+  .forgot-link {
+    font-size: 13px; color: var(--green); text-decoration: none; font-weight: 500;
+  }
+  .forgot-link:hover { text-decoration: underline; }
+
+  /* ── SUBMIT ── */
+  .btn-login {
+    width: 100%;
+    padding: 0 8px 0 24px;
+    height: 52px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    background: var(--dark);
+    color: var(--white);
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    transition: background 0.2s, transform 0.15s;
+    letter-spacing: -0.2px;
+    margin-bottom: 16px;
+    text-decoration: none;
+  }
+  .btn-login:hover { background: var(--green); transform: translateY(-1px); }
+  .btn-login-arrow {
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    transition: background 0.2s;
+  }
+  .btn-login:hover .btn-login-arrow { background: rgba(255,255,255,0.22); }
+  .btn-login-arrow svg { width: 15px; height: 15px; stroke: #fff; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 16px; color: var(--muted); font-size: 12px;
+  }
+  .divider::before, .divider::after {
+    content: ''; flex: 1; height: 1px; background: rgba(0,0,0,0.09);
+  }
+
+  /* ── GOOGLE ── */
+  .btn-google {
+    width: 100%;
+    padding: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    background: var(--white);
+    color: var(--text);
+    border: 1px solid rgba(0,0,0,0.10);
+    border-radius: 11px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    transition: box-shadow 0.2s, background 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    margin-bottom: 28px;
+  }
+  .btn-google:hover { background: #fafafa; box-shadow: 0 2px 8px rgba(0,0,0,0.10); }
+  .google-icon { width: 18px; height: 18px; flex-shrink: 0; }
+
+  /* ── SIGNUP PROMPT ── */
+  .signup-prompt {
+    font-size: 13px; color: var(--muted); text-align: center;
+  }
+  .signup-prompt a {
+    color: var(--green); font-weight: 600; text-decoration: none;
+  }
+  .signup-prompt a:hover { text-decoration: underline; }
+
+  /* ── FOOTER links ── */
+  .card-footer {
+    display: flex; gap: 20px; justify-content: center;
+    margin-top: 32px; padding-top: 24px;
+    border-top: 1px solid rgba(0,0,0,0.07);
+  }
+  .card-footer a {
+    font-size: 12px; color: var(--muted); text-decoration: none; transition: color 0.2s;
+  }
+  .card-footer a:hover { color: var(--text); }
+/* ── PASSWORD STRENGTH ── */
+.password-strength {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+.strength-track {
+  flex: 1;
+  height: 3px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.strength-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 100px;
+  transition: width 0.3s ease, background 0.3s ease;
+}
+.strength-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  min-width: 48px;
+  text-align: right;
+  transition: color 0.3s;
+}
+
+/* ── CADASTRO — fit in viewport, no scroll ── */
+body.cadastro-page {
+  align-items: flex-start;
+  padding: 0;
+  overflow: hidden;
+  height: 100vh;
+}
+body.cadastro-page .page-logo {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+}
+.cadastro-card {
+  max-width: 520px;
+  padding: 28px 40px 20px;
+  margin-top: 0;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  overflow-y: auto;
+  max-height: calc(100vh - 80px);
+}
+.cadastro-card .card-eyebrow { margin-bottom: 6px; }
+.cadastro-card .card-title   { font-size: 28px; margin-bottom: 4px; }
+.cadastro-card .card-sub     { font-size: 13px; margin-bottom: 18px; line-height: 1.5; }
+.cadastro-card .form-group   { margin-bottom: 8px; }
+.cadastro-card .form-input   { padding: 9px 14px; font-size: 14px; }
+.cadastro-card .form-label   { font-size: 10.5px; }
+.cadastro-card .btn-login    { height: 44px; font-size: 14px; margin-bottom: 10px; }
+.cadastro-card .divider      { margin-bottom: 10px; }
+.cadastro-card .btn-google   { padding: 9px; font-size: 13px; margin-bottom: 14px; }
+.cadastro-card .card-footer  { margin-top: 14px; padding-top: 14px; }
+.cadastro-card .signup-prompt { font-size: 12px; }
+.cadastro-card .password-strength { margin-top: 4px; }
+
+.name-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.terms-row {
+  margin-bottom: 12px !important;
+  margin-top: 2px !important;
+  align-items: flex-start;
+}
+.terms-row .remember-wrap { align-items: flex-start; }
