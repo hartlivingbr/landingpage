@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+  <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hart — Dashboard Vendedor</title>
+<link rel="icon" type="image/x-icon" href="images/favicon.ico"/>
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/global.css"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  body { background:#F5F5F7; font-family:"DM Sans",sans-serif; margin:0; }
+  .topbar {
+    background:var(--dark); height:60px; padding:0 40px;
+    display:flex; align-items:center; justify-content:space-between;
+    position:fixed; top:0; left:0; right:0; z-index:100;
+  }
+  .topbar img { height:22px; mix-blend-mode:screen; }
+  .topbar-right { display:flex; align-items:center; gap:12px; }
+  .topbar-name { font-size:13px; color:rgba(255,255,255,0.65); }
+  .topbar-badge {
+    padding:3px 10px; border-radius:100px;
+    font-size:10px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
+  }
+  .badge-bronze  { background:#F5EDD8; color:#8B6914; }
+  .badge-prata   { background:#EBEBEB; color:#666; }
+  .badge-ouro    { background:#FFF3CD; color:#92710E; }
+  .badge-platina { background:#EAE8FF; color:#4B3F9E; }
+  .btn-sair {
+    padding:6px 14px; background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.15); border-radius:8px;
+    color:rgba(255,255,255,0.6); font-size:12px; font-weight:500;
+    cursor:pointer; font-family:"DM Sans",sans-serif; transition:all 0.2s;
+  }
+  .btn-sair:hover { background:rgba(255,255,255,0.14); color:#fff; }
+  .main { max-width:1100px; margin:0 auto; padding:88px 40px 60px; }
+  .greeting {
+    font-family:"Playfair Display",serif;
+    font-size:clamp(28px,3vw,40px); font-weight:700;
+    color:var(--dark); letter-spacing:-1px; margin-bottom:6px;
+  }
+  .greeting em { font-style:italic; color:var(--green); }
+  .sub { font-size:14px; color:#8E8E93; margin-bottom:40px; }
+  .kpi-grid {
+    display:grid; grid-template-columns:repeat(4,1fr);
+    gap:14px; margin-bottom:24px;
+  }
+  .kpi-card {
+    background:#fff; border-radius:16px; padding:20px 22px;
+    box-shadow:0 0 0 0.5px rgba(0,0,0,0.08),0 2px 8px rgba(0,0,0,0.06);
+  }
+  .kpi-label { font-size:11px; font-weight:600; color:#8E8E93; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:10px; }
+  .kpi-value { font-size:32px; font-weight:700; color:#1C1C1E; letter-spacing:-1px; line-height:1; margin-bottom:4px; }
+  .kpi-hint  { font-size:12px; color:#8E8E93; }
+  .content-grid {
+    display:grid; grid-template-columns:1.4fr 1fr; gap:14px;
+  }
+  .dash-card {
+    background:#fff; border-radius:16px; padding:24px 26px;
+    box-shadow:0 0 0 0.5px rgba(0,0,0,0.08),0 2px 8px rgba(0,0,0,0.06);
+  }
+  .dash-card-title { font-size:14px; font-weight:700; color:#1C1C1E; margin-bottom:18px; letter-spacing:-0.2px; }
+  .ref-link-box {
+    background:#F5F5F7; border-radius:10px; padding:12px 14px;
+    display:flex; align-items:center; gap:10px; margin-bottom:14px;
+  }
+  .ref-link-text { flex:1; font-size:13px; color:#555; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .btn-copy {
+    padding:6px 14px; background:var(--dark); color:#fff;
+    border:none; border-radius:8px; font-size:12px; font-weight:600;
+    cursor:pointer; font-family:"DM Sans",sans-serif;
+    transition:background 0.2s; flex-shrink:0;
+  }
+  .btn-copy:hover { background:var(--green); }
+  .cat-progress { display:flex; flex-direction:column; gap:10px; }
+  .cat-level {
+    display:flex; align-items:center; gap:12px;
+    padding:12px 14px; border-radius:11px; border:1px solid #E5E5EA;
+    transition:all 0.2s;
+  }
+  .cat-level.current { border-color:var(--green); background:rgba(45,90,39,0.04); }
+  .cat-level-badge {
+    width:36px; height:36px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:10px; font-weight:700; letter-spacing:0.04em; flex-shrink:0;
+  }
+  .lvl-bronze  { background:#F5EDD8; color:#8B6914; }
+  .lvl-prata   { background:#EBEBEB; color:#666; }
+  .lvl-ouro    { background:#FFF3CD; color:#92710E; }
+  .lvl-platina { background:#EAE8FF; color:#4B3F9E; }
+  .cat-level-info { flex:1; }
+  .cat-level-name { font-size:13px; font-weight:700; color:#1C1C1E; }
+  .cat-level-meta { font-size:11px; color:#8E8E93; margin-top:1px; }
+  .cat-current-tag { font-size:10px; font-weight:700; color:var(--green); text-transform:uppercase; letter-spacing:0.06em; }
+  .coming-soon {
+    background:#fff; border-radius:20px; padding:64px 40px;
+    text-align:center; margin-top:14px;
+    box-shadow:0 0 0 0.5px rgba(0,0,0,0.08),0 2px 16px rgba(0,0,0,0.06);
+  }
+  .coming-soon-icon {
+    width:64px; height:64px; background:#F5F5F7; border-radius:16px;
+    display:flex; align-items:center; justify-content:center;
+    margin:0 auto 20px; color:var(--green);
+  }
+  .coming-soon-icon svg { width:28px; height:28px; }
+  .coming-soon h2 {
+    font-family:"Playfair Display",serif;
+    font-size:28px; font-weight:700; color:var(--dark);
+    letter-spacing:-0.8px; margin-bottom:10px;
+  }
+  .coming-soon h2 em { font-style:italic; color:var(--green); }
+  .coming-soon p { font-size:15px; color:#8E8E93; line-height:1.65; max-width:420px; margin:0 auto; }
+  #loading {
+    position:fixed; inset:0; background:var(--dark);
+    display:flex; align-items:center; justify-content:center; z-index:999;
+  }
+  .loading-logo { height:28px; mix-blend-mode:screen; animation:pulse 1.5s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:0.4;} 50%{opacity:1;} }
+</style>
+</head>
+<body>
+
+<div id="loading">
+  <img class="loading-logo" src="images/Hart_Tipografico_04.png" alt="Hart"/>
+</div>
+
+<div class="topbar">
+  <a href="index.html"><img src="images/Hart_Tipografico_04.png" alt="Hart"/></a>
+  <div class="topbar-right">
+    <span class="topbar-name" id="topbar-name">—</span>
+    <span class="topbar-badge badge-bronze" id="topbar-badge">Bronze</span>
+    <button class="btn-sair" onclick="sair()">Sair</button>
+  </div>
+</div>
+
+<div class="main">
+  <div class="greeting">Olá, <em id="dash-nome">—</em> 👋</div>
+  <div class="sub">Bem-vindo ao seu dashboard Hart. Acompanhe suas indicações e resultados.</div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Indicações totais</div>
+      <div class="kpi-value" id="kpi-indicacoes">—</div>
+      <div class="kpi-hint">Desde o início</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Vendas confirmadas</div>
+      <div class="kpi-value" id="kpi-vendas">—</div>
+      <div class="kpi-hint">Últimos 12 meses</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Comissões pagas</div>
+      <div class="kpi-value" id="kpi-comissao">—</div>
+      <div class="kpi-hint">Total acumulado</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Sua categoria</div>
+      <div class="kpi-value" id="kpi-cat" style="font-size:22px;margin-top:4px;">—</div>
+      <div class="kpi-hint" id="kpi-mult">—</div>
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <div class="dash-card">
+      <div class="dash-card-title">Seu link de indicação</div>
+      <div class="ref-link-box">
+        <span class="ref-link-text" id="ref-link">—</span>
+        <button class="btn-copy" onclick="copiarLink()">Copiar</button>
+      </div>
+      <p style="font-size:13px;color:#8E8E93;line-height:1.55;">
+        Compartilhe com proprietários de imóveis. Quando contratarem a Hart, você recebe a comissão automaticamente.
+      </p>
+    </div>
+    <div class="dash-card">
+      <div class="dash-card-title">Sua progressão</div>
+      <div class="cat-progress">
+        <div class="cat-level" id="lvl-bronze">
+          <div class="cat-level-badge lvl-bronze">BRZ</div>
+          <div class="cat-level-info">
+            <div class="cat-level-name">Bronze</div>
+            <div class="cat-level-meta">0,75× — Entrada</div>
+          </div>
+        </div>
+        <div class="cat-level" id="lvl-prata">
+          <div class="cat-level-badge lvl-prata">PRT</div>
+          <div class="cat-level-info">
+            <div class="cat-level-name">Prata</div>
+            <div class="cat-level-meta">1× — 1 venda ou 3 adm./ano</div>
+          </div>
+        </div>
+        <div class="cat-level" id="lvl-ouro">
+          <div class="cat-level-badge lvl-ouro">OUR</div>
+          <div class="cat-level-info">
+            <div class="cat-level-name">Ouro</div>
+            <div class="cat-level-meta">1,10× — 5 vendas ou 10 adm./ano</div>
+          </div>
+        </div>
+        <div class="cat-level" id="lvl-platina">
+          <div class="cat-level-badge lvl-platina">PLT</div>
+          <div class="cat-level-info">
+            <div class="cat-level-name">Platina</div>
+            <div class="cat-level-meta">1,25× — 10 vendas ou 15 adm./ano</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="coming-soon">
+    <div class="coming-soon-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+      </svg>
+    </div>
+    <h2>Relatórios em <em>breve.</em></h2>
+    <p>Em breve você acompanha aqui seu histórico completo de indicações, pagamentos e evolução de categoria.</p>
+  </div>
+</div>
+
+<script>
+const { createClient } = supabase;
+const sb = createClient("https://suntiyiqskhpppzxhuns.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1bnRpeWlxc2tocHBwenhodW5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MTg1NTQsImV4cCI6MjA4OTA5NDU1NH0.skzgdKsg_cdF4XuyIzM86w40PmiBPublYH0i_5vc3Lw");
+
+const catMults = {
+  bronze: "0,75× da comissão base",
+  prata:  "1× da comissão base",
+  ouro:   "1,10× da comissão base",
+  platina:"1,25× da comissão base",
+};
+
+async function init() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return window.location.href = "login-vendedor.html";
+
+  let { data: v } = await sb.from("usuarios").select("*").eq("id", session.user.id).maybeSingle();
+
+  if (!v) {
+    // Sem perfil: cria como vendedor (e-mail/senha sem trigger, ou Google sem trigger)
+    const meta = session.user.user_metadata || {};
+    const nome = meta.nome || meta.full_name?.split(" ")[0] || meta.given_name || session.user.email.split("@")[0];
+    const sobrenome = meta.sobrenome || meta.family_name || meta.full_name?.split(" ").slice(1).join(" ") || "";
+    await sb.from("usuarios").upsert({
+      id: session.user.id, nome, sobrenome,
+      email: session.user.email,
+      telefone: meta.telefone || null,
+      tipo: "vendedor",
+      eh_corretor: meta.eh_corretor || false,
+      creci: meta.creci || null,
+      imobiliaria: meta.imobiliaria || null,
+      categoria: meta.categoria || "bronze"
+    }, { onConflict: "id", ignoreDuplicates: false });
+    const { data: newV } = await sb.from("usuarios").select("*").eq("id", session.user.id).maybeSingle();
+    if (!newV) return window.location.href = "login-vendedor.html";
+    v = newV;
+  } else if (v.tipo !== "vendedor") {
+    // Perfil existe com tipo errado.
+    // O trigger SQL pode criar usuários Google como "proprietario" incorretamente.
+    // Verificamos o marcador de sessionStorage definido em entrarGoogle().
+    const oauthTipo = sessionStorage.getItem("hart_oauth_tipo");
+    sessionStorage.removeItem("hart_oauth_tipo");
+    if (oauthTipo === "vendedor") {
+      // Corrige o tipo para vendedor (foi o trigger que causou o erro)
+      await sb.from("usuarios").update({ tipo: "vendedor" }).eq("id", session.user.id);
+      v.tipo = "vendedor";
+    } else {
+      return window.location.href = "login-vendedor.html";
+    }
+  }
+
+  const cat  = v.categoria || "bronze";
+  const nome = v.nome || session.user.email.split("@")[0];
+
+  document.getElementById("dash-nome").textContent   = nome;
+  document.getElementById("topbar-name").textContent = v.nome + " " + (v.sobrenome || "");
+  document.getElementById("topbar-badge").textContent= cat.charAt(0).toUpperCase() + cat.slice(1);
+  document.getElementById("topbar-badge").className  = "topbar-badge badge-" + cat;
+  document.getElementById("kpi-cat").textContent     = cat.charAt(0).toUpperCase() + cat.slice(1);
+  document.getElementById("kpi-mult").textContent    = catMults[cat] || "";
+  document.getElementById("kpi-indicacoes").textContent = "0";
+  document.getElementById("kpi-vendas").textContent     = "0";
+  document.getElementById("kpi-comissao").textContent   = "R$ 0";
+
+  // Link de indicação
+  const refLink = window.location.origin + "/cadastro-vendedor.html?ref=" + session.user.id.slice(0,8);
+  document.getElementById("ref-link").textContent = refLink;
+
+  // Destaca nível atual
+  document.querySelectorAll(".cat-level").forEach(el => el.classList.remove("current"));
+  const lvlEl = document.getElementById("lvl-" + cat);
+  if (lvlEl) {
+    lvlEl.classList.add("current");
+    lvlEl.querySelector(".cat-level-info").insertAdjacentHTML(
+      "beforeend", '<div class="cat-current-tag">Seu nível atual</div>'
+    );
+  }
+
+  document.getElementById("loading").style.display = "none";
+}
+
+function copiarLink() {
+  const link = document.getElementById("ref-link").textContent;
+  navigator.clipboard.writeText(link).then(() => {
+    const btn = document.querySelector(".btn-copy");
+    btn.textContent = "Copiado!";
+    setTimeout(() => btn.textContent = "Copiar", 2000);
+  });
+}
+
+async function sair() {
+  await sb.auth.signOut();
+  window.location.href = "login-vendedor.html";
+}
+
+init();
+</script>
+</body>
+</html>
