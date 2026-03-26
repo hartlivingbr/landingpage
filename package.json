@@ -8,11 +8,11 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "15.1.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.47.10",
-    "@supabase/ssr": "^0.5.2"
+    "next": "^16.2.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",
