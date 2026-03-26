@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wc -l \"/c/Users/berna/OneDrive/Desktop/hart-v2\"/*.html \"/c/Users/berna/OneDrive/Desktop/hart-v2/css\"/*.css \"/c/Users/berna/OneDrive/Desktop/hart-v2/js\"/*.js)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(where npx:*)",
+      "Bash(where node:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/dashboard-vendedor.html)",
+      "Bash(cp index.html public/)",
+      "Bash(cp parceiros.html public/)",
+      "Bash(cp termos.html public/)",
+      "Bash(cp privacidade.html public/)",
+      "Bash(cp cookies.html public/)",
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx next:*)"
+    ]
+  }
+}

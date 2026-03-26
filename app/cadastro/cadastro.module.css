@@ -1,0 +1,354 @@
+.body {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'DM Sans', sans-serif;
+  background: #F0EDE6;
+}
+
+.LP {
+  flex: 0 0 50%;
+  background: #fff;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px;
+  overflow-y: auto;
+  min-height: 100vh;
+  position: relative;
+}
+
+.back {
+  position: absolute;
+  top: 28px;
+  left: 28px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #6B7280;
+  text-decoration: none;
+  z-index: 10;
+  transition: color .2s;
+}
+.back:hover { color: #192318; }
+
+.FC {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px 0;
+}
+
+.logoPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #192318;
+  border-radius: 100px;
+  padding: 10px 22px;
+  margin-bottom: 32px;
+}
+.logoPill img {
+  height: 22px;
+  width: auto;
+  display: block;
+  max-width: 110px;
+  object-fit: contain;
+}
+
+.areaBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(216, 219, 142, 0.15);
+  border: 1px solid rgba(200, 169, 110, 0.35);
+  border-radius: 100px;
+  padding: 6px 14px;
+  margin-bottom: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #92710E;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+.areaDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #92710E;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.h1 {
+  font-size: 30px;
+  font-weight: 800;
+  color: #000;
+  margin-bottom: 8px;
+  letter-spacing: -.5px;
+}
+.sub {
+  color: #4B5563;
+  font-size: 14px;
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+
+.msg {
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+.msgError {
+  background: rgba(229, 72, 77, .10);
+  color: #c0392b;
+  border: 1px solid rgba(229, 72, 77, .25);
+}
+.msgSuccess {
+  background: rgba(48, 164, 108, .10);
+  color: #1e7e50;
+  border: 1px solid rgba(48, 164, 108, .25);
+}
+
+.refBanner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(45,90,39,.07);
+  border: 1.5px solid rgba(45,90,39,.2);
+  border-radius: 10px;
+  padding: 11px 14px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #2D5A27;
+}
+
+.ng {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.fg {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 12px;
+}
+.flbl {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #111;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.optional {
+  font-weight: 400;
+  color: #9CA3AF;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.inp {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1.5px solid #C8C8C8;
+  border-radius: 11px;
+  font-size: 15px;
+  font-family: 'DM Sans', sans-serif;
+  color: #374151;
+  background: #fff;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.inp:focus {
+  border-color: #2D5A27;
+  box-shadow: 0 0 0 3px rgba(45, 90, 39, .10);
+}
+.inp::placeholder { color: #9CA3AF; }
+
+.wrap { position: relative; }
+.wrap .inp { padding-right: 44px; }
+
+.eye {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9CA3AF;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+.eye svg { width: 16px; height: 16px; }
+
+.ps {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 5px;
+}
+.pst {
+  flex: 1;
+  height: 3px;
+  background: rgba(0,0,0,.08);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.psf {
+  height: 100%;
+  width: 0;
+  border-radius: 100px;
+  transition: width .3s, background .3s;
+}
+.psl {
+  font-size: 11px;
+  font-weight: 600;
+  color: #9CA3AF;
+  min-width: 48px;
+  text-align: right;
+}
+
+.corrToggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(45,90,39,.06);
+  border: 1.5px solid rgba(45,90,39,.14);
+  border-radius: 11px;
+  padding: 11px 14px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  user-select: none;
+}
+.corrToggle input {
+  width: 15px;
+  height: 15px;
+  accent-color: #2D5A27;
+  cursor: pointer;
+}
+
+.termsLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #6B7280;
+}
+.termsLabel input {
+  width: 15px;
+  height: 15px;
+  accent-color: #2D5A27;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.termsLabel a { color: #2D5A27; font-weight: 700; }
+.termsLabel a:hover { text-decoration: underline; }
+
+.btn {
+  width: 100%;
+  padding: 15px;
+  background: #192318;
+  color: #fff;
+  border: none;
+  border-radius: 11px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background .2s;
+  margin-bottom: 16px;
+  letter-spacing: -.2px;
+}
+.btn:hover:not(:disabled) { background: #2D5A27; }
+.btn:disabled { opacity: .65; cursor: not-allowed; }
+
+.prm {
+  text-align: center;
+  font-size: 14px;
+  color: #6B7280;
+  margin-top: 4px;
+}
+.prm a { color: #2D5A27; font-weight: 700; }
+.prm a:hover { text-decoration: underline; }
+
+/* Confirmation screen */
+.emailDest {
+  font-size: 16px;
+  font-weight: 700;
+  color: #192318;
+  margin-bottom: 20px;
+  word-break: break-all;
+}
+.confirmBox {
+  background: rgba(45,90,39,.06);
+  border: 1.5px solid rgba(45,90,39,.14);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 24px;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.7;
+}
+.confirmBox strong { color: #2D5A27; }
+.retryNote {
+  font-size: 12px;
+  color: #9CA3AF;
+  text-align: center;
+  margin-top: 12px;
+}
+.retryNote a { color: #2D5A27; font-weight: 700; }
+
+/* Right panel */
+.RP {
+  flex: 1;
+  background: #192318;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+.rpGlow1 {
+  position: absolute;
+  top: -120px;
+  right: -120px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(45,90,39,.30) 0%, transparent 65%);
+  pointer-events: none;
+}
+.rpGlow2 {
+  position: absolute;
+  bottom: -100px;
+  left: -80px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(45,90,39,.15) 0%, transparent 65%);
+  pointer-events: none;
+}
+.rpLogo {
+  height: 44px;
+  max-width: 200px;
+  width: auto;
+  display: block;
+  position: relative;
+  z-index: 1;
+  opacity: .9;
+  object-fit: contain;
+}
