@@ -81,30 +81,36 @@ export default function DashboardPage() {
 
     if (!perfil) {
       const meta = currentUser.user_metadata || {}
-      const nome = meta.given_name || meta.name?.split(' ')[0] || meta.nome || ''
-      const sobrenome = meta.family_name || meta.name?.split(' ').slice(1).join(' ') || meta.sobrenome || ''
-      if (!nome) {
-        await supabase.auth.signOut()
-        router.replace('/login')
-        return null
-      }
-      const { data: inserted } = await supabase.from('usuarios').insert({
+      // Google OAuth stores full_name; email/password stores nome
+      const fullName = meta.full_name || meta.name || ''
+      const nome = meta.given_name || meta.nome || fullName.split(' ')[0] || ''
+      const sobrenome = meta.family_name || meta.sobrenome || fullName.split(' ').slice(1).join(' ') || ''
+
+      const { data: inserted, error: insertError } = await supabase.from('usuarios').insert({
         user_id: currentUser.id,
         tipo: 'vendedor',
-        nome,
-        sobrenome,
-        email: currentUser.email,
+        nome: nome || currentUser.email?.split('@')[0] || 'Usuário',
+        sobrenome: sobrenome || '',
+        email: currentUser.email || '',
         telefone: meta.phone || null,
         eh_corretor: false,
         categoria: 'bronze',
       }).select().single()
 
-      if (!inserted) {
-        await supabase.auth.signOut()
-        router.replace('/login')
-        return null
+      if (insertError || !inserted) {
+        // Profile may already exist with a race condition — try fetching again
+        const { data: retry } = await supabase
+          .from('usuarios').select('*')
+          .eq('user_id', currentUser.id).eq('tipo', 'vendedor').maybeSingle()
+        if (!retry) {
+          await supabase.auth.signOut()
+          router.replace('/login')
+          return null
+        }
+        perfil = retry
+      } else {
+        perfil = inserted
       }
-      perfil = inserted
     }
 
     setProfile(perfil)
