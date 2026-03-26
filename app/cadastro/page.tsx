@@ -54,6 +54,8 @@ function CadastroForm() {
   const [msg, setMsg] = useState<{ text: string; type: 'e' | 's' } | null>(null)
   const [confirmed, setConfirmed] = useState(false)
   const [confirmedEmail, setConfirmedEmail] = useState('')
+  const [resendLoading, setResendLoading] = useState(false)
+  const [resendMsg, setResendMsg] = useState('')
 
   const pwdLv = pwdStrength(password)
   const { l: pwdLabel, c: pwdColor, p: pwdPct } = LEVELS[pwdLv]
@@ -165,6 +167,22 @@ function CadastroForm() {
     router.replace('/dashboard')
   }
 
+  async function reenviarEmail() {
+    setResendLoading(true)
+    setResendMsg('')
+    const { error } = await supabase.auth.resend({
+      type: 'signup',
+      email: confirmedEmail,
+      options: { emailRedirectTo: `${window.location.origin}/auth/callback?next=/dashboard` },
+    })
+    setResendLoading(false)
+    if (error) {
+      setResendMsg('Erro ao reenviar: ' + error.message)
+    } else {
+      setResendMsg('E-mail reenviado! Verifique também o Spam.')
+    }
+  }
+
   if (confirmed) {
     return (
       <div className={styles.body}>
@@ -187,8 +205,20 @@ function CadastroForm() {
             <a href="/login" className={styles.btn} style={{ display: 'block', textAlign: 'center', textDecoration: 'none' }}>
               Já confirmei — Entrar
             </a>
+            {resendMsg && (
+              <p style={{ fontSize: 13, textAlign: 'center', marginTop: 12, color: resendMsg.startsWith('Erro') ? '#c0392b' : '#1e7e50' }}>
+                {resendMsg}
+              </p>
+            )}
             <p className={styles.retryNote}>
-              Não recebeu? <a href="/cadastro">Tentar novamente</a>
+              Não recebeu?{' '}
+              <button
+                onClick={reenviarEmail}
+                disabled={resendLoading}
+                style={{ background: 'none', border: 'none', color: '#2D5A27', fontWeight: 700, cursor: 'pointer', fontSize: 12, padding: 0 }}
+              >
+                {resendLoading ? 'Enviando…' : 'Reenviar e-mail'}
+              </button>
             </p>
           </div>
         </div>
