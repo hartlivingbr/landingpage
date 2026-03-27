@@ -13,7 +13,11 @@
       "Bash(cp cookies.html public/)",
       "Bash(npm install:*)",
       "Bash(npx tsc:*)",
-      "Bash(npx next:*)"
+      "Bash(npx next:*)",
+      "Bash(\"C:\\\\Users\\\\berna\\\\OneDrive\\\\Desktop\\\\hart-v2\\\\public\\\\login-proprietario.html\")",
+      "Bash(\"C:\\\\Users\\\\berna\\\\OneDrive\\\\Desktop\\\\hart-v2\\\\public\\\\login-vendedor.html\")",
+      "Bash(sed -i 's|href=\"\"login-proprietario.html\"\" class=\"\"btn-ghost\"\">Entrar|href=\"\"/login?tipo=proprietario\"\" class=\"\"btn-ghost\"\">Entrar|g' \"C:\\\\Users\\\\berna\\\\OneDrive\\\\Desktop\\\\hart-v2\\\\public\\\\index.html\")",
+      "Bash(sed -i 's|href=\"\"login-proprietario.html\"\" class=\"\"feat-link\"\"|href=\"\"/login?tipo=proprietario\"\" class=\"\"feat-link\"\"|g' \"C:\\\\Users\\\\berna\\\\OneDrive\\\\Desktop\\\\hart-v2\\\\public\\\\index.html\")"
     ]
   }
 }
