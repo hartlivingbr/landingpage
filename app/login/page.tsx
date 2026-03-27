@@ -18,7 +18,8 @@ function LoginForm() {
   const searchParams = useSearchParams()
   const supabase = createClient()
 
-  const [userType, setUserType] = useState<'vendedor' | 'proprietario'>('vendedor')
+  const initialType = searchParams.get('tipo') === 'proprietario' ? 'proprietario' : 'vendedor'
+  const [userType, setUserType] = useState<'vendedor' | 'proprietario'>(initialType)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPwd, setShowPwd] = useState(false)
