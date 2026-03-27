@@ -87,10 +87,10 @@
           <span class="sidebar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span> Dashboard
         </div>
         <div class="sidebar-item">
-          <span class="sidebar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg></span> Imóveis
+          <span class="sidebar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg></span> Imóveis
         </div>
         <div class="sidebar-item">
-          <span class="sidebar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span> Contratos
+          <span class="sidebar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span> Contratos
         </div>
         <div class="sidebar-item">
           <span class="sidebar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span> Financeiro
@@ -113,123 +113,78 @@
 
       <!-- MAIN -->
       <div class="dash-main">
+        <!-- Floating notification (top-left) -->
+        <div class="dash-notif-float">
+          <div class="notif-float-check">
+            <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#30A46C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <div class="notif-float-title">Receita do mês</div>
+            <div class="notif-float-sub">+8,5% vs anterior</div>
+          </div>
+        </div>
+
         <div class="dash-header">
           <div>
             <div class="dash-title">HART Dashboard</div>
-            <div class="dash-subtitle">Visão geral — Março 2026</div>
+            <div class="dash-subtitle">Aqui está um resumo das suas propriedades</div>
           </div>
-          <div class="dash-actions">
-            <button class="dash-btn">+ Adicionar imóvel</button>
-          </div>
+          <div class="dash-header-avatar">B</div>
         </div>
 
-        <!-- KPIs -->
+        <!-- KPIs — 2 cards -->
         <div class="kpi-grid">
           <div class="kpi-card">
-            <div class="kpi-label">Receita do mês</div>
-            <div class="kpi-value">R$ 42k</div>
-            <div class="kpi-change up">↑ +8,5% vs anterior</div>
+            <div class="kpi-label">Receitas do mês</div>
+            <div class="kpi-value">R$ 12.320<span class="kpi-cents">,00</span></div>
+            <div class="kpi-delta kpi-delta-up">+8,5% vs mês anterior</div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-label">Taxa média retorno</div>
-            <div class="kpi-value">5,2%</div>
-            <div class="kpi-change up">↑ +0,4% vs anterior</div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-label">Ocupação</div>
-            <div class="kpi-value">94%</div>
-            <div class="kpi-change up">↑ +2% este mês</div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-label">Imóveis geridos</div>
-            <div class="kpi-value">7</div>
-            <div class="kpi-change up">↑ 1 adicionado</div>
+            <div class="kpi-label">Despesas do mês</div>
+            <div class="kpi-value">R$ 2.850<span class="kpi-cents">,00</span></div>
+            <div class="kpi-delta kpi-delta-down">-3,2% vs mês anterior</div>
           </div>
         </div>
 
-        <!-- BOTTOM GRID -->
-        <div class="bottom-grid">
-          <!-- Property List -->
-          <div class="dash-card">
-            <div class="card-title">Seus Imóveis <span class="card-tag">Taxa de retorno ao mês</span></div>
-            <div class="property-item">
-              <div class="prop-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg></div>
-              <div class="prop-info">
-                <div class="prop-name">Ed. Itaim 980</div>
-                <div class="prop-location">São Paulo, SP</div>
-              </div>
-              <div class="prop-return">
-                <div class="prop-pct">4,97%</div>
-                <div class="prop-pct-label">ao mês</div>
-              </div>
-            </div>
-            <div class="property-item">
-              <div class="prop-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg></div>
-              <div class="prop-info">
-                <div class="prop-name">Ed. Moema 1250</div>
-                <div class="prop-location">São Paulo, SP</div>
-              </div>
-              <div class="prop-return">
-                <div class="prop-pct">5,46%</div>
-                <div class="prop-pct-label">ao mês</div>
-              </div>
-            </div>
-            <div class="property-item">
-              <div class="prop-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg></div>
-              <div class="prop-info">
-                <div class="prop-name">Vila Nova Conceição 88</div>
-                <div class="prop-location">São Paulo, SP</div>
-              </div>
-              <div class="prop-return">
-                <div class="prop-pct">5,12%</div>
-                <div class="prop-pct-label">ao mês</div>
-              </div>
+        <!-- Performance do Portfólio -->
+        <div class="dash-card perf-card">
+          <div class="perf-header">
+            <div class="card-title" style="margin-bottom:0">Performance do Portfólio</div>
+            <div class="perf-toggle">
+              <button class="perf-btn perf-btn-active">6M</button>
+              <button class="perf-btn">1A</button>
+              <button class="perf-btn">Max</button>
             </div>
           </div>
+          <svg class="perf-svg" viewBox="0 0 360 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="perfGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#30A46C" stop-opacity="0.18"/>
+                <stop offset="100%" stop-color="#30A46C" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path d="M0 72 C30 70, 50 68, 70 62 C90 56, 100 58, 120 50 C140 42, 150 46, 170 38 C190 30, 200 34, 220 26 C240 18, 250 20, 270 14 C290 8, 310 10, 330 6 C345 3, 355 2, 360 1 L360 80 L0 80 Z" fill="url(#perfGrad)"/>
+            <path d="M0 72 C30 70, 50 68, 70 62 C90 56, 100 58, 120 50 C140 42, 150 46, 170 38 C190 30, 200 34, 220 26 C240 18, 250 20, 270 14 C290 8, 310 10, 330 6 C345 3, 355 2, 360 1" stroke="#30A46C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="330" cy="6" r="3.5" fill="#30A46C"/>
+            <circle cx="330" cy="6" r="6" fill="#30A46C" fill-opacity="0.18"/>
+          </svg>
+          <div class="perf-months">
+            <span>Out</span><span>Nov</span><span>Dez</span><span>Jan</span><span>Fev</span><span>Mar</span>
+          </div>
+        </div>
 
-          <!-- Mini Chart -->
-          <div class="dash-card">
-            <div class="card-title">Receita vs Despesas <span class="card-tag">Últimos 6 meses</span></div>
-            <div class="chart-bars">
-              <div class="bar-group">
-                <div class="bar bar-receita" style="height:58%"></div>
-                <div class="bar bar-despesa" style="height:30%"></div>
-                <div class="bar-label">Out</div>
-              </div>
-              <div class="bar-group">
-                <div class="bar bar-receita" style="height:62%"></div>
-                <div class="bar bar-despesa" style="height:28%"></div>
-                <div class="bar-label">Nov</div>
-              </div>
-              <div class="bar-group">
-                <div class="bar bar-receita" style="height:70%"></div>
-                <div class="bar bar-despesa" style="height:32%"></div>
-                <div class="bar-label">Dez</div>
-              </div>
-              <div class="bar-group">
-                <div class="bar bar-receita" style="height:65%"></div>
-                <div class="bar bar-despesa" style="height:26%"></div>
-                <div class="bar-label">Jan</div>
-              </div>
-              <div class="bar-group">
-                <div class="bar bar-receita" style="height:75%"></div>
-                <div class="bar bar-despesa" style="height:29%"></div>
-                <div class="bar-label">Fev</div>
-              </div>
-              <div class="bar-group">
-                <div class="bar bar-receita" style="height:85%"></div>
-                <div class="bar bar-despesa" style="height:31%"></div>
-                <div class="bar-label">Mar</div>
-              </div>
+        <!-- Bottom row: property + return -->
+        <div class="bottom-grid">
+          <div class="dash-card prop-mini-card">
+            <div class="prop-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div>
+            <div class="prop-info">
+              <div class="prop-name">Ed. Itaim 980</div>
+              <div class="prop-location">São Paulo, SP</div>
             </div>
-            <div class="chart-legend">
-              <div class="legend-item">
-                <div class="legend-dot" style="background:#2D5A27"></div> Receita
-              </div>
-              <div class="legend-item">
-                <div class="legend-dot" style="background:#D1E8CE"></div> Despesas
-              </div>
-            </div>
+          </div>
+          <div class="dash-card return-mini-card">
+            <div class="return-pct">4,97%</div>
+            <div class="return-label">Taxa de retorno ao mês</div>
           </div>
         </div>
       </div>
