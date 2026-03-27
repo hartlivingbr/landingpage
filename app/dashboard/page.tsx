@@ -9,10 +9,10 @@ import styles from './dashboard.module.css'
 type View = 'dashboard' | 'indicacoes' | 'comissoes' | 'ranking' | 'rede' | 'materiais' | 'perfil' | 'missoes'
 
 const RANK_CONFIG: Record<string, { emoji: string; label: string; mult: string; layers: string }> = {
-  bronze:  { emoji: '◈', label: 'Bronze',  mult: '0.75×', layers: '2 layers' },
-  prata:   { emoji: '◇', label: 'Prata',   mult: '1×',    layers: '3 layers' },
-  ouro:    { emoji: '◆', label: 'Ouro',    mult: '1.10×', layers: '4 layers' },
-  platina: { emoji: '✦', label: 'Platina', mult: '1.25×', layers: '5 layers' },
+  bronze:  { emoji: '◈', label: 'Bronze',  mult: '1.05×', layers: '2 layers' },
+  prata:   { emoji: '◇', label: 'Prata',   mult: '1.10×', layers: '3 layers' },
+  ouro:    { emoji: '◆', label: 'Ouro',    mult: '1.25×', layers: '4 layers' },
+  platina: { emoji: '✦', label: 'Platina', mult: '1.40×', layers: '5 layers' },
 }
 
 function fmtBRL(v: number) {
@@ -44,11 +44,9 @@ export default function DashboardPage() {
   const [profile, setProfile] = useState<Usuario | null>(null)
   const [indicacoes, setIndicacoes] = useState<Indicacao[]>([])
   const [comissoes, setComissoes] = useState<Comissao[]>([])
-  const [rede, setRede] = useState<Usuario[]>([])
   const [loadingProfile, setLoadingProfile] = useState(true)
   const [toast, setToast] = useState('')
   const [toastVisible, setToastVisible] = useState(false)
-  const [avatarUploading, setAvatarUploading] = useState(false)
 
   // Indicação form
   const [inNome, setInNome] = useState('')
@@ -141,44 +139,13 @@ export default function DashboardPage() {
     setComissoes(data || [])
   }, [])
 
-  const loadRede = useCallback(async (refCode: string) => {
-    const { data } = await supabase
-      .from('usuarios')
-      .select('*')
-      .eq('referido_por', refCode)
-      .order('created_at', { ascending: false })
-    setRede(data || [])
-  }, [])
-
   useEffect(() => {
     supabase.auth.getUser().then(async ({ data: { user: u } }) => {
       if (!u) { router.replace('/login'); return }
       setUser(u)
       const perfil = await loadProfile(u)
       if (perfil) {
-        const code = perfil.id.replace(/-/g, '').slice(0, 10)
-        await Promise.all([loadIndicacoes(perfil.id), loadComissoes(perfil.id), loadRede(code)])
-
-        // Real-time: indicações
-        const indSub = supabase
-          .channel('indicacoes-rt')
-          .on('postgres_changes', { event: '*', schema: 'public', table: 'indicacoes', filter: `vendedor_id=eq.${perfil.id}` }, () => {
-            loadIndicacoes(perfil.id)
-          })
-          .subscribe()
-
-        // Real-time: comissões
-        const comSub = supabase
-          .channel('comissoes-rt')
-          .on('postgres_changes', { event: '*', schema: 'public', table: 'comissoes', filter: `vendedor_id=eq.${perfil.id}` }, () => {
-            loadComissoes(perfil.id)
-          })
-          .subscribe()
-
-        return () => {
-          supabase.removeChannel(indSub)
-          supabase.removeChannel(comSub)
-        }
+        await Promise.all([loadIndicacoes(perfil.id), loadComissoes(perfil.id)])
       }
       setLoadingProfile(false)
     })
@@ -226,20 +193,6 @@ export default function DashboardPage() {
     setProfile(p => p ? { ...p, nome: pfNome, sobrenome: pfSobrenome, telefone: pfTel, imobiliaria: pfImob } : p)
     setPfSaved(true)
     setTimeout(() => setPfSaved(false), 3000)
-  }
-
-  async function uploadAvatar(file: File) {
-    if (!user) return
-    setAvatarUploading(true)
-    const ext = file.name.split('.').pop()
-    const path = `${user.id}.${ext}`
-    const { error: upErr } = await supabase.storage.from('avatars').upload(path, file, { upsert: true })
-    if (upErr) { showToast('Erro ao enviar foto: ' + upErr.message); setAvatarUploading(false); return }
-    const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(path)
-    await supabase.auth.updateUser({ data: { avatar_url: publicUrl } })
-    setUser((u: any) => u ? { ...u, user_metadata: { ...u.user_metadata, avatar_url: publicUrl } } : u)
-    setAvatarUploading(false)
-    showToast('Foto atualizada!')
   }
 
   function copyLink() {
@@ -360,13 +313,7 @@ export default function DashboardPage() {
             HART Parceiros <span style={{ opacity: .4 }}>›</span> <strong>{view.charAt(0).toUpperCase() + view.slice(1)}</strong>
           </div>
           <div className={styles.topbarRight}>
-            <button className={styles.bellBtn} aria-label="Notificações">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-              </svg>
-            </button>
-            <div className={styles.topbarAvatar} onClick={() => setView('perfil')} style={{ cursor: 'pointer' }}>
+            <div className={styles.topbarAvatar}>
               {avatarUrl ? <img src={avatarUrl} alt={displayName} /> : initials}
             </div>
           </div>
@@ -647,10 +594,10 @@ export default function DashboardPage() {
               <div className={styles.card}>
                 <p className={`${styles.sectionTitle} ${styles.mb16}`}>Hierarquia de níveis</p>
                 {[
-                  { key: 'bronze',  emoji: '◈', label: 'Bronze',  desc: 'Perfil completo · 2 layers',              mult: '0.75×' },
-                  { key: 'prata',   emoji: '◇', label: 'Prata',   desc: '1 venda ou 3 indicações · 3 layers',     mult: '1×' },
-                  { key: 'ouro',    emoji: '◆', label: 'Ouro',    desc: '5 vendas ou 10 indicações · 4 layers',   mult: '1.10×' },
-                  { key: 'platina', emoji: '✦', label: 'Platina', desc: '10 vendas de mobília · 5 layers',        mult: '1.25×' },
+                  { key: 'bronze',  emoji: '◈', label: 'Bronze',  desc: 'Perfil completo · 2 layers',              mult: '1.05×' },
+                  { key: 'prata',   emoji: '◇', label: 'Prata',   desc: '1 venda ou 3 indicações · 3 layers',     mult: '1.10×' },
+                  { key: 'ouro',    emoji: '◆', label: 'Ouro',    desc: '5 vendas ou 10 indicações · 4 layers',   mult: '1.25×' },
+                  { key: 'platina', emoji: '✦', label: 'Platina', desc: '10 vendas de mobília · 5 layers',        mult: '1.40×' },
                 ].map(tier => (
                   <div key={tier.key} className={`${styles.rankTier} ${profile?.categoria === tier.key ? styles.current : ''}`}>
                     <div className={styles.rankTierBadge}>{tier.emoji}</div>
@@ -673,52 +620,13 @@ export default function DashboardPage() {
                   <p className={styles.eyebrow}>Crescimento</p>
                   <h1 className={styles.pageTitle}>Minha Rede</h1>
                 </div>
-                <span style={{ fontSize: 13, color: 'var(--muted)' }}>{rede.length} {rede.length === 1 ? 'parceiro' : 'parceiros'}</span>
               </div>
-
-              <div className={styles.linkHighlight} style={{ marginBottom: 20 }}>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <p className={styles.linkHighlightLabel}>Seu link de indicação</p>
-                  <p className={styles.linkHighlightUrl}>{refLink || 'carregando…'}</p>
-                </div>
-                <button className={styles.copyBtn} onClick={copyLink}>Copiar link</button>
-              </div>
-
               <div className={styles.card}>
-                <p className={`${styles.sectionTitle} ${styles.mb16}`}>Parceiros na sua rede</p>
-                {rede.length === 0 ? (
-                  <div className={styles.empty}>
-                    <p className={styles.emptyIcon}>🌐</p>
-                    <p>Nenhum parceiro ainda. Compartilhe seu link para crescer!</p>
-                  </div>
-                ) : (
-                  <div className={styles.tableWrap}>
-                    <table>
-                      <thead>
-                        <tr><th>Nome</th><th>E-mail</th><th>Nível</th><th>Entrou em</th></tr>
-                      </thead>
-                      <tbody>
-                        {rede.map(m => (
-                          <tr key={m.id}>
-                            <td>
-                              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                <div className={styles.indicAvatar}>{m.nome[0]}</div>
-                                <span>{m.nome} {m.sobrenome}</span>
-                              </div>
-                            </td>
-                            <td style={{ fontSize: 12, color: 'var(--muted)' }}>{m.email}</td>
-                            <td>
-                              <span className={styles.sbRankPill}>
-                                {RANK_CONFIG[m.categoria]?.emoji} {RANK_CONFIG[m.categoria]?.label}
-                              </span>
-                            </td>
-                            <td style={{ fontSize: 11, color: 'var(--muted)' }}>{fmtDate(m.created_at)}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
+                <div className={styles.empty}>
+                  <p className={styles.emptyIcon}>🌐</p>
+                  <p>Sua rede está vazia. Compartilhe seu link de indicação para crescer!</p>
+                  <button className={styles.btnSubmit} style={{ marginTop: 16 }} onClick={copyLink}>Copiar link de indicação</button>
+                </div>
               </div>
             </div>
           )}
@@ -770,20 +678,13 @@ export default function DashboardPage() {
               </div>
               <div className={styles.card}>
                 <div className={styles.perfilAvatarZone}>
-                  <div style={{ position: 'relative' }}>
-                    <div className={styles.perfilAvatarLg}>
-                      {avatarUrl ? <img src={avatarUrl} alt={displayName} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} /> : initials}
-                    </div>
-                    <label style={{ position: 'absolute', bottom: 0, right: 0, width: 26, height: 26, borderRadius: '50%', background: 'var(--green)', border: '2px solid #f7f7f5', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: avatarUploading ? 'wait' : 'pointer' }} title="Trocar foto">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                      <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => { const f = e.target.files?.[0]; if (f) uploadAvatar(f) }} />
-                    </label>
+                  <div className={styles.perfilAvatarLg}>
+                    {avatarUrl ? <img src={avatarUrl} alt={displayName} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} /> : initials}
                   </div>
                   <div>
                     <p style={{ fontSize: 16, fontWeight: 600 }}>{displayName}</p>
                     <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>{profile?.email}</p>
                     <span className={styles.sbRankPill} style={{ marginTop: 6, display: 'inline-flex' }}>{rank.emoji} {rank.label}</span>
-                    {avatarUploading && <p style={{ fontSize: 11, color: 'var(--muted)', marginTop: 4 }}>Enviando foto…</p>}
                   </div>
                 </div>
 
