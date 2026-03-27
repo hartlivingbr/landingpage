@@ -198,6 +198,20 @@
 }
 .topbarBreadcrumb strong { color: var(--text); font-weight: 500; }
 .topbarRight { display: flex; align-items: center; gap: 14px; }
+.bellBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid #e8e8e5;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #9a9a90;
+  transition: color .15s, background .15s;
+}
+.bellBtn:hover { background: #f0f0ed; color: var(--text); }
 .topbarAvatar {
   width: 28px;
   height: 28px;

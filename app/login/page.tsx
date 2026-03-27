@@ -25,6 +25,9 @@ function LoginForm() {
   const [showPwd, setShowPwd] = useState(false)
   const [loading, setLoading] = useState(false)
   const [msg, setMsg] = useState<{ text: string; type: 'e' | 's' } | null>(null)
+  const [unconfirmedEmail, setUnconfirmedEmail] = useState('')
+  const [resendLoading, setResendLoading] = useState(false)
+  const [resendMsg, setResendMsg] = useState('')
 
   useEffect(() => {
     const err = searchParams.get('error')
@@ -60,8 +63,10 @@ function LoginForm() {
 
     if (error) {
       setLoading(false)
-      if (error.message === 'Email not confirmed' || error.message.includes('confirm'))
+      if (error.message === 'Email not confirmed' || error.message.includes('confirm')) {
+        setUnconfirmedEmail(email)
         return setMsg({ text: 'Confirme seu e-mail antes de entrar. Verifique a caixa de entrada e o spam.', type: 'e' })
+      }
       return setMsg({ text: 'E-mail ou senha incorretos. Verifique e tente novamente.', type: 'e' })
     }
 
@@ -118,6 +123,19 @@ function LoginForm() {
       options: { redirectTo: `${window.location.origin}/auth/callback?next=${next}` },
     })
     if (error) setMsg({ text: 'Erro ao conectar com Google. Tente novamente.', type: 'e' })
+  }
+
+  async function reenviarVerificacao() {
+    if (!unconfirmedEmail) return
+    setResendLoading(true)
+    setResendMsg('')
+    const { error } = await supabase.auth.resend({
+      type: 'signup',
+      email: unconfirmedEmail,
+      options: { emailRedirectTo: `${window.location.origin}/auth/callback?next=/dashboard` },
+    })
+    setResendLoading(false)
+    setResendMsg(error ? 'Erro ao reenviar. Tente novamente.' : 'E-mail reenviado! Verifique também o Spam.')
   }
 
   async function esqueceuSenha() {
@@ -180,6 +198,23 @@ function LoginForm() {
           {msg && (
             <div className={`${styles.msg} ${msg.type === 'e' ? styles.msgError : styles.msgSuccess}`}>
               {msg.text}
+            </div>
+          )}
+          {unconfirmedEmail && (
+            <div style={{ marginBottom: 12 }}>
+              <button
+                onClick={reenviarVerificacao}
+                disabled={resendLoading}
+                style={{ background: 'none', border: 'none', color: '#2D5A27', fontWeight: 700, cursor: 'pointer', fontSize: 12, padding: 0 }}
+                type="button"
+              >
+                {resendLoading ? 'Enviando…' : '↺ Reenviar e-mail de verificação'}
+              </button>
+              {resendMsg && (
+                <p style={{ fontSize: 12, marginTop: 4, color: resendMsg.startsWith('Erro') ? '#c0392b' : '#1e7e50' }}>
+                  {resendMsg}
+                </p>
+              )}
             </div>
           )}
 
