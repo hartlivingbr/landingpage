@@ -53,6 +53,37 @@
   object-fit: contain;
 }
 
+/* Role switcher */
+.typeSwitch {
+  display: flex;
+  background: #F3F4F6;
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 24px;
+  gap: 4px;
+}
+
+.typeBtn {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  color: #6B7280;
+  background: transparent;
+  cursor: pointer;
+  transition: background .2s, color .2s, box-shadow .2s;
+}
+.typeBtn:hover:not(.typeBtnActive) { color: #374151; }
+
+.typeBtnActive {
+  background: #fff;
+  color: #192318;
+  box-shadow: 0 1px 4px rgba(0,0,0,.12);
+}
+
 .areaBadge {
   display: inline-flex;
   align-items: center;
