@@ -234,7 +234,7 @@ export default function DashboardPage() {
 
   if (loadingProfile) {
     return (
-      <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center', fontFamily: "'DM Sans', sans-serif", color: '#7a8470', fontSize: 14 }}>
+      <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center', fontFamily: "'Inter', sans-serif", color: '#7a8470', fontSize: 14 }}>
         Carregando…
       </div>
     )
