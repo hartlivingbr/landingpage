@@ -240,14 +240,14 @@
   margin-bottom: 6px;
 }
 .pageTitle {
-  font-family: var(--font-d);
-  font-size: 28px;
-  font-weight: 400;
-  line-height: 1.15;
+  font-family: var(--font-b);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.2;
   color: var(--text);
-  font-style: italic;
+  letter-spacing: -.3px;
 }
-.pageTitle strong { font-style: normal; font-weight: 500; color: var(--green); }
+.pageTitle strong { font-weight: 700; color: var(--green); }
 .sectionTitle {
   font-size: 11px;
   font-weight: 600;
@@ -258,11 +258,11 @@
 .textMuted { color: var(--muted); }
 .textXs { font-size: 11px; }
 .statNum {
-  font-family: var(--font-d);
+  font-family: var(--font-b);
   font-size: 22px;
-  font-weight: 500;
-  font-style: italic;
+  font-weight: 700;
   color: var(--text);
+  font-variant-numeric: tabular-nums;
 }
 
 /* Grids */
@@ -394,7 +394,7 @@
   text-transform: uppercase;
   font-weight: 500;
 }
-.kpiValue { font-family: var(--font-d); font-size: 28px; color: var(--text); line-height: 1; margin-bottom: 7px; font-style: italic; }
+.kpiValue { font-family: var(--font-b); font-size: 26px; font-weight: 700; color: var(--text); line-height: 1; margin-bottom: 7px; font-variant-numeric: tabular-nums; letter-spacing: -.3px; }
 .kpiChange { font-size: 12px; color: var(--success); font-weight: 500; }
 .kpiChange.neutral { color: var(--muted); font-weight: 400; }
 .neutral { color: var(--muted); font-weight: 400; }
@@ -531,7 +531,7 @@
 .extratoLabel { font-size: 13px; font-weight: 500; color: var(--text); }
 .extratoSub { font-size: 12px; color: var(--muted); margin-top: 2px; }
 .extratoValue { text-align: right; flex-shrink: 0; }
-.extratoAmount { font-family: var(--font-d); font-size: 18px; color: var(--text); font-style: italic; }
+.extratoAmount { font-family: var(--font-b); font-size: 16px; font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
 .extratoAmount.green { color: var(--success); }
 .commStatusTag { font-size: 10.5px; padding: 2px 9px; border-radius: 999px; margin-top: 3px; display: inline-block; font-weight: 500; }
 .tagPending { background: rgba(138,106,16,.09); color: #7a5200; }
@@ -654,7 +654,7 @@
 .rankTier.current .rankTierName { color: var(--yellow); }
 .rankTierDesc { font-size: 12px; color: var(--muted); margin-top: 2px; }
 .rankTier.current .rankTierDesc { color: rgba(255,255,255,.55); }
-.rankTierMult { font-family: var(--font-d); font-size: 20px; color: var(--muted); font-style: italic; }
+.rankTierMult { font-family: var(--font-b); font-size: 18px; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
 .rankTier.current .rankTierMult { color: rgba(255,255,255,.85); }
 
 /* Empty */
