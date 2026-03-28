@@ -122,8 +122,9 @@ function LoginForm() {
 
   async function esqueceuSenha() {
     if (!email) return setMsg({ text: 'Digite seu e-mail acima para recuperar a senha.', type: 'e' })
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/login`,
+      redirectTo: `${siteUrl}/auth/callback?next=/reset-password`,
     })
     if (error) return setMsg({ text: error.message, type: 'e' })
     setMsg({ text: 'E-mail de recuperação enviado! Verifique a caixa de entrada e o spam.', type: 's' })

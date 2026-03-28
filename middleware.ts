@@ -35,6 +35,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
+  // Never redirect away from reset-password even when authenticated
+  if (request.nextUrl.pathname === '/reset-password') {
+    return supabaseResponse
+  }
+
   return supabaseResponse
 }
 
