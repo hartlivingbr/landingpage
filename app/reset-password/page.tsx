@@ -1,9 +1,26 @@
 'use client'
 
 import { useState, useEffect, Suspense } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import styles from '../login/login.module.css'
+
+function pwdStrength(p: string): number {
+  if (!p) return 0
+  let s = 1
+  if (p.length >= 8) s++
+  if (/[A-Z]/.test(p) && /[a-z]/.test(p)) s++
+  if (/[0-9]/.test(p)) s++
+  if (/[^A-Za-z0-9]/.test(p)) s++
+  return Math.min(s, 4)
+}
+const LEVELS = [
+  { l: '',       c: '',        p: 0   },
+  { l: 'Fraca',  c: '#E5484D', p: 25  },
+  { l: 'Média',  c: '#F76B15', p: 55  },
+  { l: 'Boa',    c: '#30A46C', p: 80  },
+  { l: 'Forte',  c: '#2D5A27', p: 100 },
+]
 
 export default function ResetPasswordPage() {
   return (
@@ -14,33 +31,38 @@ export default function ResetPasswordPage() {
 }
 
 function ResetPasswordForm() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
+  const router  = useRouter()
   const supabase = createClient()
 
   const [password, setPassword] = useState('')
-  const [p2, setP2] = useState('')
-  const [showPwd, setShowPwd] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [msg, setMsg] = useState<{ text: string; type: 'e' | 's' } | null>(null)
-  const [ready, setReady] = useState(false)
+  const [p2, setP2]             = useState('')
+  const [showPwd, setShowPwd]   = useState(false)
+  const [loading, setLoading]   = useState(false)
+  const [msg, setMsg]           = useState<{ text: string; type: 'e' | 's' } | null>(null)
+  const [ready, setReady]       = useState(false)
+
+  const pwdLv = pwdStrength(password)
+  const { l: pwdLabel, c: pwdColor, p: pwdPct } = LEVELS[pwdLv]
 
   useEffect(() => {
-    // After the user clicks the reset link, Supabase sets an active session.
-    // We verify it exists before showing the form.
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
+    // Use getUser() (server-validated) — getSession() reads only from local storage
+    // and could be spoofed or stale after a password-reset link is clicked.
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) {
         setReady(true)
       } else {
-        setMsg({ text: 'Link inválido ou expirado. Solicite um novo link de recuperação.', type: 'e' })
+        setMsg({
+          text: 'Link inválido ou expirado. Solicite um novo link de recuperação.',
+          type: 'e',
+        })
       }
     })
   }, [])
 
   async function salvarSenha() {
-    if (!password) return setMsg({ text: 'Digite a nova senha.', type: 'e' })
+    if (!password)          return setMsg({ text: 'Digite a nova senha.', type: 'e' })
     if (password.length < 8) return setMsg({ text: 'A senha precisa ter pelo menos 8 caracteres.', type: 'e' })
-    if (password !== p2) return setMsg({ text: 'As senhas não coincidem.', type: 'e' })
+    if (password !== p2)    return setMsg({ text: 'As senhas não coincidem.', type: 'e' })
 
     setLoading(true)
     setMsg(null)
@@ -102,7 +124,15 @@ function ResetPasswordForm() {
                 </button>
               </div>
 
-              <label className={styles.flbl} style={{ marginTop: 16 }}>Confirmar nova senha</label>
+              {/* Password strength bar (same pattern as cadastro) */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 8, marginBottom: 4 }}>
+                <div style={{ flex: 1, height: 3, borderRadius: 999, background: '#e8e8e5', overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: pwdPct + '%', background: pwdColor, borderRadius: 999, transition: 'width .25s, background .25s' }} />
+                </div>
+                <span style={{ fontSize: 11, color: pwdColor, minWidth: 36 }}>{pwdLabel}</span>
+              </div>
+
+              <label className={styles.flbl} style={{ marginTop: 14 }}>Confirmar nova senha</label>
               <div className={styles.fieldWrap}>
                 <input
                   className={styles.inp}
@@ -123,9 +153,15 @@ function ResetPasswordForm() {
           )}
 
           {!ready && !msg && (
-            <p style={{ textAlign: 'center', color: 'var(--muted, #9a9a90)', fontSize: 14, marginTop: 24 }}>
+            <p style={{ textAlign: 'center', color: '#9a9a90', fontSize: 14, marginTop: 24 }}>
               Verificando link...
             </p>
+          )}
+
+          {!ready && msg?.type === 'e' && (
+            <a href="/login" className={styles.btn} style={{ display: 'block', textAlign: 'center', textDecoration: 'none', marginTop: 20 }}>
+              Solicitar novo link
+            </a>
           )}
 
           <p className={styles.prm} style={{ marginTop: 20 }}>

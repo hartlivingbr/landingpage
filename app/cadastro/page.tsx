@@ -69,8 +69,9 @@ function CadastroForm() {
   }, [])
 
   async function cadastrar() {
+    const trimEmail = email.trim().toLowerCase()
     if (!fname || !lname) return setMsg({ text: 'Preencha seu nome completo.', type: 'e' })
-    if (!email) return setMsg({ text: 'Preencha seu e-mail.', type: 'e' })
+    if (!trimEmail) return setMsg({ text: 'Preencha seu e-mail.', type: 'e' })
     if (!phone) return setMsg({ text: 'Preencha seu telefone.', type: 'e' })
     if (!password) return setMsg({ text: 'Crie uma senha.', type: 'e' })
     if (password.length < 8) return setMsg({ text: 'A senha precisa ter pelo menos 8 caracteres.', type: 'e' })
@@ -85,11 +86,13 @@ function CadastroForm() {
       if (refLink && refLink.includes('?')) refCode = new URL(refLink).searchParams.get('ref') || refLink
     } catch (_) {}
 
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin
+
     const { data, error } = await supabase.auth.signUp({
-      email,
+      email: trimEmail,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback?next=/dashboard`,
+        emailRedirectTo: `${siteUrl}/auth/callback?next=/dashboard`,
         data: {
           nome: fname,
           sobrenome: lname,
@@ -186,10 +189,11 @@ function CadastroForm() {
   async function reenviarEmail() {
     setResendLoading(true)
     setResendMsg('')
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin
     const { error } = await supabase.auth.resend({
       type: 'signup',
       email: confirmedEmail,
-      options: { emailRedirectTo: `${window.location.origin}/auth/callback?next=/dashboard` },
+      options: { emailRedirectTo: `${siteUrl}/auth/callback?next=/dashboard` },
     })
     setResendLoading(false)
     if (error) {

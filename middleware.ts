@@ -35,14 +35,12 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
-  // Never redirect away from reset-password even when authenticated
-  if (request.nextUrl.pathname === '/reset-password') {
-    return supabaseResponse
-  }
+  // /reset-password: allow even when authenticated (user is setting a new password)
+  // Middleware still runs here to refresh the session token — it just never redirects away.
 
   return supabaseResponse
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/login', '/cadastro'],
+  matcher: ['/dashboard/:path*', '/login', '/cadastro', '/reset-password'],
 }

@@ -19,26 +19,29 @@ function LoginForm() {
   const supabase = createClient()
 
   const initialType = searchParams.get('tipo') === 'proprietario' ? 'proprietario' : 'vendedor'
-  const [userType, setUserType] = useState<'vendedor' | 'proprietario'>(initialType)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [showPwd, setShowPwd] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [msg, setMsg] = useState<{ text: string; type: 'e' | 's' } | null>(null)
+  const [userType, setUserType]   = useState<'vendedor' | 'proprietario'>(initialType)
+  const [email, setEmail]         = useState('')
+  const [password, setPassword]   = useState('')
+  const [showPwd, setShowPwd]     = useState(false)
+  const [loading, setLoading]     = useState(false)
+  const [fgtLoading, setFgtLoading] = useState(false)
+  const [msg, setMsg]             = useState<{ text: string; type: 'e' | 's' } | null>(null)
 
   useEffect(() => {
     const err = searchParams.get('error')
     if (err === 'auth_callback_failed') {
-      setMsg({ text: 'Erro ao confirmar e-mail. Tente novamente.', type: 'e' })
+      setMsg({ text: 'Erro ao confirmar e-mail. Tente novamente ou solicite um novo link.', type: 'e' })
     }
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      if (!session) return
+
+    // Use getUser() (server-validated) instead of getSession() (local storage only)
+    supabase.auth.getUser().then(async ({ data: { user } }) => {
+      if (!user) return
       const { data: perfil } = await supabase
         .from('usuarios')
         .select('id, tipo')
-        .eq('user_id', session.user.id)
+        .eq('user_id', user.id)
         .maybeSingle()
-      if (perfil?.tipo === 'vendedor') router.replace('/dashboard')
+      if (perfil?.tipo === 'vendedor')      router.replace('/dashboard')
       else if (perfil?.tipo === 'proprietario') router.replace('/dashboard-proprietario.html')
     })
   }, [])
@@ -50,21 +53,34 @@ function LoginForm() {
   }
 
   async function entrar() {
-    if (!email) return setMsg({ text: 'Preencha seu e-mail.', type: 'e' })
-    if (!password) return setMsg({ text: 'Preencha sua senha.', type: 'e' })
+    const trimEmail = email.trim().toLowerCase()
+    if (!trimEmail)  return setMsg({ text: 'Preencha seu e-mail.', type: 'e' })
+    if (!password)   return setMsg({ text: 'Preencha sua senha.', type: 'e' })
 
     setLoading(true)
     setMsg(null)
 
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: trimEmail,
+      password,
+    })
 
     if (error) {
       setLoading(false)
-      if (error.message === 'Email not confirmed' || error.message.includes('confirm'))
-        return setMsg({ text: 'Confirme seu e-mail antes de entrar. Verifique a caixa de entrada e o spam.', type: 'e' })
+      if (
+        error.message === 'Email not confirmed' ||
+        error.message === 'email_not_confirmed' ||
+        error.message.toLowerCase().includes('confirm')
+      ) {
+        return setMsg({
+          text: 'Confirme seu e-mail antes de entrar. Verifique a caixa de entrada e a pasta de Spam.',
+          type: 'e',
+        })
+      }
       return setMsg({ text: 'E-mail ou senha incorretos. Verifique e tente novamente.', type: 'e' })
     }
 
+    // Check if profile exists for the selected user type
     const { data: perfil } = await supabase
       .from('usuarios')
       .select('id')
@@ -75,11 +91,12 @@ function LoginForm() {
     if (perfil) {
       setMsg({ text: 'Login realizado! Redirecionando...', type: 's' })
       const dest = userType === 'vendedor' ? '/dashboard' : '/dashboard-proprietario.html'
-      setTimeout(() => router.replace(dest), 800)
+      setTimeout(() => router.replace(dest), 700)
       return
     }
 
-    // Tenta criar perfil a partir dos metadados do cadastro (apenas vendedor)
+    // Fallback: try to create the vendedor profile from user_metadata
+    // (covers the case where the user confirmed email but profile wasn't created yet)
     if (userType === 'vendedor') {
       const meta = data.user.user_metadata || {}
       if (meta.tipo === 'vendedor' && meta.nome) {
@@ -87,19 +104,18 @@ function LoginForm() {
           user_id:      data.user.id,
           tipo:         'vendedor',
           nome:         meta.nome,
-          sobrenome:    meta.sobrenome   || '',
+          sobrenome:    meta.sobrenome    || '',
           email:        data.user.email,
-          telefone:     meta.telefone    || null,
-          eh_corretor:  meta.eh_corretor || false,
-          creci:        meta.creci       || null,
-          imobiliaria:  meta.imobiliaria || null,
+          telefone:     meta.telefone     || null,
+          eh_corretor:  meta.eh_corretor  || false,
+          creci:        meta.creci        || null,
+          imobiliaria:  meta.imobiliaria  || null,
           categoria:    'bronze',
           referido_por: meta.referido_por || null,
         })
-
         if (!insErr) {
           setMsg({ text: 'Conta ativada! Redirecionando...', type: 's' })
-          setTimeout(() => router.replace('/dashboard'), 800)
+          setTimeout(() => router.replace('/dashboard'), 700)
           return
         }
       }
@@ -108,26 +124,38 @@ function LoginForm() {
     await supabase.auth.signOut()
     setLoading(false)
     const tipoLabel = userType === 'vendedor' ? 'vendedor' : 'proprietário'
-    setMsg({ text: `Você não tem conta de ${tipoLabel}. Verifique o tipo selecionado ou crie uma conta.`, type: 'e' })
+    setMsg({
+      text: `Você não tem uma conta de ${tipoLabel}. Verifique o tipo selecionado ou crie uma conta.`,
+      type: 'e',
+    })
   }
 
   async function entrarGoogle() {
     const next = userType === 'vendedor' ? '/dashboard' : '/dashboard-proprietario.html'
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/auth/callback?next=${next}` },
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback?next=${next}`,
+      },
     })
     if (error) setMsg({ text: 'Erro ao conectar com Google. Tente novamente.', type: 'e' })
   }
 
   async function esqueceuSenha() {
-    if (!email) return setMsg({ text: 'Digite seu e-mail acima para recuperar a senha.', type: 'e' })
+    const trimEmail = email.trim().toLowerCase()
+    if (!trimEmail) return setMsg({ text: 'Digite seu e-mail acima para recuperar a senha.', type: 'e' })
+
+    setFgtLoading(true)
+    setMsg(null)
+
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    const { error } = await supabase.auth.resetPasswordForEmail(trimEmail, {
       redirectTo: `${siteUrl}/auth/callback?next=/reset-password`,
     })
-    if (error) return setMsg({ text: error.message, type: 'e' })
-    setMsg({ text: 'E-mail de recuperação enviado! Verifique a caixa de entrada e o spam.', type: 's' })
+
+    setFgtLoading(false)
+    if (error) return setMsg({ text: 'Erro ao enviar e-mail: ' + error.message, type: 'e' })
+    setMsg({ text: 'E-mail de recuperação enviado! Verifique também a pasta de Spam.', type: 's' })
   }
 
   const isVendedor = userType === 'vendedor'
@@ -237,12 +265,14 @@ function LoginForm() {
           </div>
 
           <div className={styles.meta}>
-            <label className={styles.rem}>
-              <input type="checkbox" />
-              <span>Lembrar de mim</span>
-            </label>
-            <button className={styles.fgt} onClick={esqueceuSenha} type="button">
-              Esqueci minha senha
+            <span />
+            <button
+              className={styles.fgt}
+              onClick={esqueceuSenha}
+              disabled={fgtLoading}
+              type="button"
+            >
+              {fgtLoading ? 'Enviando...' : 'Esqueci minha senha'}
             </button>
           </div>
 
