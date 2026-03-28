@@ -301,7 +301,7 @@ export default function DashboardPage() {
         </div>
         {/* Mobile: section title + bell + avatar shown in top bar */}
         <span className={styles.mobileNavTitle}>{view.charAt(0).toUpperCase() + view.slice(1)}</span>
-        <button className={styles.notifBtn} onClick={() => setView('dashboard')} aria-label="Notificações">
+        <button className={styles.mobileNotifBtn} onClick={() => setView('dashboard')} aria-label="Notificações">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5A4.5 4.5 0 0 0 3.5 6v2.5L2 10.5h12L12.5 8.5V6A4.5 4.5 0 0 0 8 1.5Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/><path d="M6.5 10.5c0 .828.672 1.5 1.5 1.5s1.5-.672 1.5-1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
           {notifCount > 0 && <span className={styles.notifDot}>{notifCount > 9 ? '9+' : notifCount}</span>}
         </button>

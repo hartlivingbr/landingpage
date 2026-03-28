@@ -751,6 +751,23 @@
   .sbNav { display: none; }
   .sbFooter { display: none; }
 
+  /* Mobile notif bell in sidebar header */
+  .mobileNotifBtn {
+    display: flex;
+    position: relative;
+    width: 32px;
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid #e8e8e5;
+    border-radius: 8px;
+    color: #6b6b60;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-right: 8px;
+  }
+
   /* Mobile top bar: section title + avatar */
   .mobileNavTitle {
     display: block;
@@ -887,6 +904,9 @@
   display: none;
 }
 .mobileNavAvatar {
+  display: none;
+}
+.mobileNotifBtn {
   display: none;
 }
 
