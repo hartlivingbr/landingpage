@@ -83,6 +83,19 @@
   window.addEventListener('scroll', updateNav, { passive: true });
   updateNav();
 
+  // ── Mobile hamburger ──
+  const hamburger = document.getElementById('navHamburger');
+  const drawer = document.getElementById('mobileDrawer');
+  if (hamburger && drawer) {
+    hamburger.addEventListener('click', () => {
+      drawer.classList.toggle('open');
+    });
+    drawer.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => drawer.classList.remove('open'));
+    });
+    window.addEventListener('scroll', () => drawer.classList.remove('open'), { passive: true });
+  }
+
   // ── Hero Particles ──
   (function() {
     const canvas = document.getElementById('heroParticles');
