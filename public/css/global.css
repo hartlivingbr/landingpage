@@ -171,8 +171,8 @@ footer {
     overflow: hidden;
   }
   .nav-links { display: none; }
-  .nav-cta .btn-ghost { display: none; }
-  .nav-cta .btn-primary { padding: 7px 12px; font-size: 12px; white-space: nowrap; }
+  .nav-cta .btn-ghost { display: inline-flex; padding: 7px 14px; font-size: 13px; }
+  .nav-cta .btn-primary { display: none; }
   .nav-pill.scrolled {
     max-width: calc(100% - 24px);
     padding: 10px 16px;
