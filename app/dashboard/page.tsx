@@ -94,9 +94,12 @@ export default function DashboardPage() {
         nome: nome || currentUser.email?.split('@')[0] || 'Usuário',
         sobrenome: sobrenome || '',
         email: currentUser.email || '',
-        telefone: meta.phone || null,
-        eh_corretor: false,
-        categoria: 'bronze',
+        telefone:     meta.telefone     || null,
+        eh_corretor:  meta.eh_corretor  || false,
+        creci:        meta.creci        || null,
+        imobiliaria:  meta.imobiliaria  || null,
+        categoria:    'bronze',
+        referido_por: meta.referido_por || null,
       }).select().single()
 
       if (insertError || !inserted) {
@@ -189,19 +192,25 @@ export default function DashboardPage() {
 
   async function submitIndicacao() {
     if (!profile) return
-    if (!inNome || !inTel || !inEndereco) {
+    const trimNome     = inNome.trim()
+    const trimTel      = inTel.trim()
+    const trimEmail    = inEmail.trim().toLowerCase()
+    const trimEndereco = inEndereco.trim()
+    const trimObs      = inObs.trim()
+
+    if (!trimNome || !trimTel || !trimEndereco) {
       showToast('Preencha os campos obrigatórios.')
       return
     }
     setSubmitLoading(true)
-    const obs = [inObs, inServico ? `Serviço: ${inServico}` : ''].filter(Boolean).join('\n')
+    const obs = [trimObs, inServico ? `Serviço: ${inServico}` : ''].filter(Boolean).join('\n')
     const { error } = await supabase.from('indicacoes').insert({
-      vendedor_id:    profile.id,
-      nome_lead:      inNome,
-      email_lead:     inEmail || null,
-      telefone_lead:  inTel,
-      endereco_imovel: inEndereco,
-      observacoes:    obs || null,
+      vendedor_id:     profile.id,
+      nome_lead:       trimNome,
+      email_lead:      trimEmail || null,
+      telefone_lead:   trimTel,
+      endereco_imovel: trimEndereco,
+      observacoes:     obs || null,
     })
     setSubmitLoading(false)
     if (error) { showToast('Erro ao enviar: ' + error.message); return }
@@ -212,6 +221,7 @@ export default function DashboardPage() {
 
   async function savePerfil() {
     if (!profile) return
+    if (!pfNome.trim()) { showToast('O nome não pode estar vazio.'); return }
     setPfLoading(true)
     const { error } = await supabase.from('usuarios').update({
       nome: pfNome,
@@ -228,14 +238,25 @@ export default function DashboardPage() {
 
   function copyLink() {
     if (!profile) return
-    const code = profile.id.replace(/-/g, '').slice(0, 10)
-    const link = `${window.location.origin}/cadastro?ref=${code}`
+    const code   = profile.id.replace(/-/g, '').slice(0, 10)
+    const base   = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin
+    const link   = `${base}/cadastro?ref=${code}`
     navigator.clipboard.writeText(link)
     showToast('Link copiado!')
   }
 
   async function uploadAvatar(file: File) {
     if (!user) return
+    const MAX_SIZE_MB = 2
+    if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+      showToast(`A imagem deve ter no máximo ${MAX_SIZE_MB} MB.`)
+      return
+    }
+    const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
+    if (!allowed.includes(file.type)) {
+      showToast('Formato inválido. Use JPG, PNG, WebP ou GIF.')
+      return
+    }
     setUploadingAvatar(true)
     const ext = file.name.split('.').pop() || 'jpg'
     const path = `${user.id}.${ext}`
@@ -257,7 +278,8 @@ export default function DashboardPage() {
   const initials = profile ? (profile.nome[0] || '') + (profile.sobrenome[0] || '') : '…'
   const rank = RANK_CONFIG[profile?.categoria || 'bronze'] || RANK_CONFIG.bronze
   const refCode = profile ? profile.id.replace(/-/g, '').slice(0, 10) : ''
-  const refLink = profile ? `${typeof window !== 'undefined' ? window.location.origin : ''}/cadastro?ref=${refCode}` : ''
+  const refBase = (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_SITE_URL) || (typeof window !== 'undefined' ? window.location.origin : '')
+  const refLink = profile ? `${refBase}/cadastro?ref=${refCode}` : ''
 
   // Comissão stats
   const commPending = comissoes.filter(c => c.status === 'pendente').reduce((s, c) => s + Number(c.valor), 0)
@@ -565,11 +587,11 @@ export default function DashboardPage() {
               <div className={`${styles.card} ${styles.mb20}`}>
                 <p className={`${styles.sectionTitle} ${styles.mb16}`}>Nova indicação de proprietário</p>
                 <div className={styles.formRow2}>
-                  <div className={styles.formField}><label>Nome do proprietário *</label><input type="text" value={inNome} onChange={e => setInNome(e.target.value)} placeholder="Nome completo"/></div>
-                  <div className={styles.formField}><label>Telefone / WhatsApp *</label><input type="tel" value={inTel} onChange={e => setInTel(e.target.value)} placeholder="(11) 99999-9999"/></div>
+                  <div className={styles.formField}><label>Nome do proprietário *</label><input type="text" value={inNome} onChange={e => setInNome(e.target.value)} placeholder="Nome completo" maxLength={100}/></div>
+                  <div className={styles.formField}><label>Telefone / WhatsApp *</label><input type="tel" value={inTel} onChange={e => setInTel(e.target.value)} placeholder="(11) 99999-9999" maxLength={20}/></div>
                 </div>
                 <div className={styles.formRow2}>
-                  <div className={styles.formField}><label>E-mail</label><input type="email" value={inEmail} onChange={e => setInEmail(e.target.value)} placeholder="email@exemplo.com"/></div>
+                  <div className={styles.formField}><label>E-mail</label><input type="email" value={inEmail} onChange={e => setInEmail(e.target.value)} placeholder="email@exemplo.com" maxLength={100}/></div>
                   <div className={styles.formField}>
                     <label>Tipo de serviço</label>
                     <select value={inServico} onChange={e => setInServico(e.target.value)}>
@@ -580,8 +602,8 @@ export default function DashboardPage() {
                     </select>
                   </div>
                 </div>
-                <div className={styles.formField}><label>Endereço do imóvel *</label><input type="text" value={inEndereco} onChange={e => setInEndereco(e.target.value)} placeholder="Rua, número, bairro — São Paulo, SP"/></div>
-                <div className={styles.formField}><label>Observações</label><textarea value={inObs} onChange={e => setInObs(e.target.value)} placeholder="Contexto adicional…"/></div>
+                <div className={styles.formField}><label>Endereço do imóvel *</label><input type="text" value={inEndereco} onChange={e => setInEndereco(e.target.value)} placeholder="Rua, número, bairro — São Paulo, SP" maxLength={200}/></div>
+                <div className={styles.formField}><label>Observações</label><textarea value={inObs} onChange={e => setInObs(e.target.value)} placeholder="Contexto adicional…" maxLength={500}/></div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
                   <button className={styles.btnSubmit} onClick={submitIndicacao} disabled={submitLoading}>
                     {submitLoading ? 'Enviando…' : '↗ Enviar indicação'}
@@ -822,11 +844,11 @@ export default function DashboardPage() {
                 <div className={styles.pfRow}>
                   <div className={styles.pfField}>
                     <label>Nome</label>
-                    <input type="text" value={pfNome} onChange={e => setPfNome(e.target.value)} />
+                    <input type="text" value={pfNome} onChange={e => setPfNome(e.target.value)} maxLength={60} />
                   </div>
                   <div className={styles.pfField}>
                     <label>Sobrenome</label>
-                    <input type="text" value={pfSobrenome} onChange={e => setPfSobrenome(e.target.value)} />
+                    <input type="text" value={pfSobrenome} onChange={e => setPfSobrenome(e.target.value)} maxLength={60} />
                   </div>
                 </div>
                 <div className={styles.pfField}>
@@ -836,11 +858,11 @@ export default function DashboardPage() {
                 </div>
                 <div className={styles.pfField}>
                   <label>Telefone / WhatsApp</label>
-                  <input type="tel" value={pfTel} onChange={e => setPfTel(e.target.value)} placeholder="(11) 9 0000-0000"/>
+                  <input type="tel" value={pfTel} onChange={e => setPfTel(e.target.value)} placeholder="(11) 9 0000-0000" maxLength={20}/>
                 </div>
                 <div className={styles.pfField}>
                   <label>Imobiliária</label>
-                  <input type="text" value={pfImob} onChange={e => setPfImob(e.target.value)} placeholder="Opcional"/>
+                  <input type="text" value={pfImob} onChange={e => setPfImob(e.target.value)} placeholder="Opcional" maxLength={100}/>
                 </div>
 
                 <div className={styles.perfilSectionTitle} style={{ marginTop: 20 }}>Seu código de indicação</div>
