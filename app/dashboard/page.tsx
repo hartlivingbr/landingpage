@@ -9,10 +9,10 @@ import styles from './dashboard.module.css'
 type View = 'dashboard' | 'indicacoes' | 'comissoes' | 'ranking' | 'rede' | 'materiais' | 'perfil' | 'missoes'
 
 const RANK_CONFIG: Record<string, { emoji: string; label: string; mult: string; layers: string }> = {
-  bronze:  { emoji: '◈', label: 'Bronze',  mult: '1.05×', layers: '2 layers' },
-  prata:   { emoji: '◇', label: 'Prata',   mult: '1.10×', layers: '3 layers' },
-  ouro:    { emoji: '◆', label: 'Ouro',    mult: '1.25×', layers: '4 layers' },
-  platina: { emoji: '✦', label: 'Platina', mult: '1.40×', layers: '5 layers' },
+  bronze:  { emoji: '◈', label: 'Bronze',  mult: '0.75×', layers: '2 layers' },
+  prata:   { emoji: '◇', label: 'Prata',   mult: '1×',    layers: '3 layers' },
+  ouro:    { emoji: '◆', label: 'Ouro',    mult: '1.10×', layers: '4 layers' },
+  platina: { emoji: '✦', label: 'Platina', mult: '1.25×', layers: '5 layers' },
 }
 
 function fmtBRL(v: number) {
@@ -44,7 +44,9 @@ export default function DashboardPage() {
   const [profile, setProfile] = useState<Usuario | null>(null)
   const [indicacoes, setIndicacoes] = useState<Indicacao[]>([])
   const [comissoes, setComissoes] = useState<Comissao[]>([])
+  const [rede, setRede] = useState<Usuario[]>([])
   const [loadingProfile, setLoadingProfile] = useState(true)
+  const [uploadingAvatar, setUploadingAvatar] = useState(false)
   const [toast, setToast] = useState('')
   const [toastVisible, setToastVisible] = useState(false)
 
@@ -139,17 +141,46 @@ export default function DashboardPage() {
     setComissoes(data || [])
   }, [])
 
+  const loadRede = useCallback(async (profileId: string) => {
+    // referido_por stores the 10-char ref code derived from the profile UUID
+    const code = profileId.replace(/-/g, '').slice(0, 10)
+    const { data } = await supabase
+      .from('usuarios')
+      .select('*')
+      .eq('referido_por', code)
+      .eq('tipo', 'vendedor')
+      .order('created_at', { ascending: false })
+    setRede(data || [])
+  }, [])
+
   useEffect(() => {
     supabase.auth.getUser().then(async ({ data: { user: u } }) => {
       if (!u) { router.replace('/login'); return }
       setUser(u)
       const perfil = await loadProfile(u)
       if (perfil) {
-        await Promise.all([loadIndicacoes(perfil.id), loadComissoes(perfil.id)])
+        await Promise.all([loadIndicacoes(perfil.id), loadComissoes(perfil.id), loadRede(perfil.id)])
       }
       setLoadingProfile(false)
     })
   }, [])
+
+  // Real-time subscriptions — refresh data when Supabase pushes updates
+  useEffect(() => {
+    if (!profile?.id) return
+    const chInd = supabase.channel(`ind-${profile.id}`)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'indicacoes', filter: `vendedor_id=eq.${profile.id}` },
+        () => loadIndicacoes(profile.id))
+      .subscribe()
+    const chCom = supabase.channel(`com-${profile.id}`)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'comissoes', filter: `vendedor_id=eq.${profile.id}` },
+        () => loadComissoes(profile.id))
+      .subscribe()
+    return () => {
+      supabase.removeChannel(chInd)
+      supabase.removeChannel(chCom)
+    }
+  }, [profile?.id])
 
   async function doLogout() {
     await supabase.auth.signOut()
@@ -203,6 +234,23 @@ export default function DashboardPage() {
     showToast('Link copiado!')
   }
 
+  async function uploadAvatar(file: File) {
+    if (!user) return
+    setUploadingAvatar(true)
+    const ext = file.name.split('.').pop() || 'jpg'
+    const path = `${user.id}.${ext}`
+    const { error: upErr } = await supabase.storage
+      .from('avatars')
+      .upload(path, file, { upsert: true })
+    if (upErr) { showToast('Erro no upload: ' + upErr.message); setUploadingAvatar(false); return }
+    const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(path)
+    const { error: updateErr } = await supabase.auth.updateUser({ data: { avatar_url: publicUrl } })
+    if (updateErr) { showToast('Erro ao salvar foto.'); setUploadingAvatar(false); return }
+    setUser((u: any) => u ? { ...u, user_metadata: { ...u.user_metadata, avatar_url: publicUrl } } : u)
+    setUploadingAvatar(false)
+    showToast('Foto de perfil atualizada!')
+  }
+
   const meta = user?.user_metadata || {}
   const avatarUrl = meta.avatar_url || meta.picture || null
   const displayName = profile ? `${profile.nome} ${profile.sobrenome}`.trim() : '…'
@@ -217,6 +265,7 @@ export default function DashboardPage() {
   const activeIndic = indicacoes.filter(i => i.status !== 'fechado' && i.status !== 'perdido').length
 
   const today = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })
+  const notifCount = indicacoes.filter(i => ['em_contato', 'proposta'].includes(i.status)).length
 
   function navItem(v: View, label: string, icon: React.ReactNode, badge?: React.ReactNode) {
     return (
@@ -249,6 +298,15 @@ export default function DashboardPage() {
       <nav className={styles.sidebar}>
         <div className={styles.sbLogo}>
           <img src="/images/Hart_Tipografico_04.png" alt="HART" />
+        </div>
+        {/* Mobile: section title + bell + avatar shown in top bar */}
+        <span className={styles.mobileNavTitle}>{view.charAt(0).toUpperCase() + view.slice(1)}</span>
+        <button className={styles.notifBtn} onClick={() => setView('dashboard')} aria-label="Notificações">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5A4.5 4.5 0 0 0 3.5 6v2.5L2 10.5h12L12.5 8.5V6A4.5 4.5 0 0 0 8 1.5Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/><path d="M6.5 10.5c0 .828.672 1.5 1.5 1.5s1.5-.672 1.5-1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
+          {notifCount > 0 && <span className={styles.notifDot}>{notifCount > 9 ? '9+' : notifCount}</span>}
+        </button>
+        <div className={styles.mobileNavAvatar}>
+          {avatarUrl ? <img src={avatarUrl} alt={displayName} /> : initials}
         </div>
 
         <div className={styles.sbUser}>
@@ -337,6 +395,10 @@ export default function DashboardPage() {
             HART Parceiros <span style={{ opacity: .4 }}>›</span> <strong>{view.charAt(0).toUpperCase() + view.slice(1)}</strong>
           </div>
           <div className={styles.topbarRight}>
+            <button className={styles.notifBtn} onClick={() => setView('dashboard')} aria-label="Notificações">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5A4.5 4.5 0 0 0 3.5 6v2.5L2 10.5h12L12.5 8.5V6A4.5 4.5 0 0 0 8 1.5Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/><path d="M6.5 10.5c0 .828.672 1.5 1.5 1.5s1.5-.672 1.5-1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
+              {notifCount > 0 && <span className={styles.notifDot}>{notifCount > 9 ? '9+' : notifCount}</span>}
+            </button>
             <div className={styles.topbarAvatar}>
               {avatarUrl ? <img src={avatarUrl} alt={displayName} /> : initials}
             </div>
@@ -618,10 +680,10 @@ export default function DashboardPage() {
               <div className={styles.card}>
                 <p className={`${styles.sectionTitle} ${styles.mb16}`}>Hierarquia de níveis</p>
                 {[
-                  { key: 'bronze',  emoji: '◈', label: 'Bronze',  desc: 'Perfil completo · 2 layers',              mult: '1.05×' },
-                  { key: 'prata',   emoji: '◇', label: 'Prata',   desc: '1 venda ou 3 indicações · 3 layers',     mult: '1.10×' },
-                  { key: 'ouro',    emoji: '◆', label: 'Ouro',    desc: '5 vendas ou 10 indicações · 4 layers',   mult: '1.25×' },
-                  { key: 'platina', emoji: '✦', label: 'Platina', desc: '10 vendas de mobília · 5 layers',        mult: '1.40×' },
+                  { key: 'bronze',  emoji: '◈', label: 'Bronze',  desc: 'Perfil completo · 2 layers',              mult: '0.75×' },
+                  { key: 'prata',   emoji: '◇', label: 'Prata',   desc: '1 venda ou 3 indicações · 3 layers',     mult: '1×'    },
+                  { key: 'ouro',    emoji: '◆', label: 'Ouro',    desc: '5 vendas ou 10 indicações · 4 layers',   mult: '1.10×' },
+                  { key: 'platina', emoji: '✦', label: 'Platina', desc: '10 vendas de mobília · 5 layers',        mult: '1.25×' },
                 ].map(tier => (
                   <div key={tier.key} className={`${styles.rankTier} ${profile?.categoria === tier.key ? styles.current : ''}`}>
                     <div className={styles.rankTierBadge}>{tier.emoji}</div>
@@ -644,13 +706,50 @@ export default function DashboardPage() {
                   <p className={styles.eyebrow}>Crescimento</p>
                   <h1 className={styles.pageTitle}>Minha Rede</h1>
                 </div>
+                <span style={{ fontSize: 12, color: 'var(--muted)' }}>{rede.length} parceiro{rede.length !== 1 ? 's' : ''}</span>
               </div>
-              <div className={styles.card}>
-                <div className={styles.empty}>
-                  <p className={styles.emptyIcon}>🌐</p>
-                  <p>Sua rede está vazia. Compartilhe seu link de indicação para crescer!</p>
-                  <button className={styles.btnSubmit} style={{ marginTop: 16 }} onClick={copyLink}>Copiar link de indicação</button>
+
+              <div className={`${styles.card} ${styles.mb20}`} style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ fontSize: 13, fontWeight: 600, marginBottom: 4 }}>Seu link de indicação</p>
+                  <p style={{ fontSize: 12, color: 'var(--muted)', fontFamily: 'var(--font-mono)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{refLink || '—'}</p>
                 </div>
+                <button className={styles.btnSubmit} onClick={copyLink}>Copiar link</button>
+              </div>
+
+              <div className={styles.card}>
+                <p className={`${styles.sectionTitle} ${styles.mb16}`}>Parceiros cadastrados com seu link</p>
+                {rede.length === 0 ? (
+                  <div className={styles.empty}>
+                    <p className={styles.emptyIcon}>🌐</p>
+                    <p>Nenhum parceiro na sua rede ainda.<br/>Compartilhe seu link para começar a crescer!</p>
+                  </div>
+                ) : (
+                  <div className={styles.tableWrap}>
+                    <table>
+                      <thead>
+                        <tr><th>Parceiro</th><th>E-mail</th><th>Nível</th><th>Cadastro</th></tr>
+                      </thead>
+                      <tbody>
+                        {rede.map(r => (
+                          <tr key={r.id}>
+                            <td>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                <div className={styles.indicAvatar} style={{ fontSize: 11 }}>{r.nome[0]}</div>
+                                <span>{r.nome} {r.sobrenome}</span>
+                              </div>
+                            </td>
+                            <td style={{ fontSize: 12, color: 'var(--muted)' }}>{r.email}</td>
+                            <td>
+                              <span className={styles.sbRankPill}>{RANK_CONFIG[r.categoria]?.emoji} {RANK_CONFIG[r.categoria]?.label}</span>
+                            </td>
+                            <td style={{ fontSize: 11, color: 'var(--muted)' }}>{fmtDate(r.created_at)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -702,13 +801,20 @@ export default function DashboardPage() {
               </div>
               <div className={styles.card}>
                 <div className={styles.perfilAvatarZone}>
-                  <div className={styles.perfilAvatarLg}>
-                    {avatarUrl ? <img src={avatarUrl} alt={displayName} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} /> : initials}
-                  </div>
+                  <label style={{ cursor: 'pointer', position: 'relative', flexShrink: 0 }} title="Alterar foto">
+                    <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => { const f = e.target.files?.[0]; if (f) uploadAvatar(f) }} />
+                    <div className={styles.perfilAvatarLg} style={{ opacity: uploadingAvatar ? 0.5 : 1 }}>
+                      {avatarUrl ? <img src={avatarUrl} alt={displayName} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} /> : initials}
+                    </div>
+                    <div style={{ position: 'absolute', bottom: 0, right: 0, width: 22, height: 22, borderRadius: '50%', background: 'var(--green)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px solid #fff' }}>
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 7.5L3 5.5L5.5 8L7 6.5L9 8.5" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/><circle cx="3" cy="3" r="1.5" stroke="white" strokeWidth="1.2"/></svg>
+                    </div>
+                  </label>
                   <div>
                     <p style={{ fontSize: 16, fontWeight: 600 }}>{displayName}</p>
                     <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>{profile?.email}</p>
                     <span className={styles.sbRankPill} style={{ marginTop: 6, display: 'inline-flex' }}>{rank.emoji} {rank.label}</span>
+                    <p style={{ fontSize: 11, color: 'var(--muted)', marginTop: 8 }}>Clique na foto para alterar</p>
                   </div>
                 </div>
 
