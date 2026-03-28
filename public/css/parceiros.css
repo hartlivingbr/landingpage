@@ -476,6 +476,10 @@ body { background: var(--white); }
   /* Vendedor section */
   .p-vendedor-section { padding: 64px 20px; }
 
+  /* Como Funciona */
+  .p-como { padding: 64px 0; }
+  .p-steps-grid { grid-template-columns: 1fr; border-radius: 14px; }
+
   /* FAQ */
   .p-faq { padding: 64px 0; }
 
