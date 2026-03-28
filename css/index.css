@@ -1534,6 +1534,12 @@
    ══════════════════════════════════════════ */
 
 @media (max-width: 768px) {
+  /* Navbar — override index.css redefinition */
+  .nav-pill { padding: 14px 20px; }
+  .nav-links { display: none !important; }
+  .nav-cta .btn-ghost { display: none !important; }
+  .nav-pill.scrolled { max-width: calc(100% - 24px); padding: 10px 16px; }
+
   /* Hero */
   .hero {
     padding: 0 20px;

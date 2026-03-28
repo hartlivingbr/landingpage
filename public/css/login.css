@@ -315,3 +315,7 @@
      .auth-left { padding: 100px 36px 60px; }
      .auth-logo { left: 36px; }
    }
+@media (max-width: 480px) {
+  .auth-left { padding: 80px 20px 48px; }
+  .auth-logo { left: 20px; }
+}
