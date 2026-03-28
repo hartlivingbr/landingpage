@@ -410,7 +410,7 @@
   }
   .hero-headline em {
     font-style: italic;
-    color: #D8DB8E;
+    color: #dcd68d;
   }
 
   .hero-sub {
@@ -1145,7 +1145,7 @@
     font-family: 'DM Sans', sans-serif;
     font-size: 15px;
     font-weight: 600;
-    background: #D8DB8E;
+    background: #dcd68d;
     color: #192318;
     border: none;
     border-radius: 999px;
@@ -1168,7 +1168,7 @@
     transition: background 0.2s;
   }
   .btn-cta-gold .btn-arrow svg { width: 16px; height: 16px; stroke: #192318; }
-  .btn-cta-gold:hover { background: #e8eb9e; transform: translateY(-1px); }
+  .btn-cta-gold:hover { background: #ece69d; transform: translateY(-1px); }
   .btn-cta-gold:hover .btn-arrow { background: rgba(25,35,24,0.20); }
 
   /* FOOTER */

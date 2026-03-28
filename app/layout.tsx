@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Hart Parceiros',
-  description: 'Plataforma de parceiros Hart',
+  title: 'Hart - Gestão Imobiliária',
+  description: 'Gestão de patrimônio imobiliário com eficiência, transparência e resultado.',
   icons: { icon: '/images/favicon.ico' },
 }
 
