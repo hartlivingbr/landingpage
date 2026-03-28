@@ -1643,4 +1643,9 @@
 
 @media (max-width: 768px) {
   .nav-hamburger { display: flex; }
+
+  /* FAQ mobile */
+  .p-faq { padding: 64px 0; }
+  .p-container { padding: 0 20px; }
+  .p-faq-q { font-size: 13px; padding: 16px 0; }
 }
