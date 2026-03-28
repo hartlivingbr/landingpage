@@ -306,6 +306,30 @@ export default function DashboardPage() {
         </div>
       </nav>
 
+      {/* Mobile bottom nav */}
+      <nav className={styles.mobileNav}>
+        <button className={`${styles.mobileNavItem} ${view === 'dashboard' ? styles.active : ''}`} onClick={() => setView('dashboard')}>
+          <svg width="20" height="20" viewBox="0 0 15 15" fill="none"><rect x="1" y="1" width="5.5" height="5.5" rx="1" stroke="currentColor" strokeWidth="1.3"/><rect x="8.5" y="1" width="5.5" height="5.5" rx="1" stroke="currentColor" strokeWidth="1.3"/><rect x="1" y="8.5" width="5.5" height="5.5" rx="1" stroke="currentColor" strokeWidth="1.3"/><rect x="8.5" y="8.5" width="5.5" height="5.5" rx="1" stroke="currentColor" strokeWidth="1.3"/></svg>
+          <span>Início</span>
+        </button>
+        <button className={`${styles.mobileNavItem} ${view === 'indicacoes' ? styles.active : ''}`} onClick={() => setView('indicacoes')}>
+          <svg width="20" height="20" viewBox="0 0 15 15" fill="none"><path d="M2 13L13 2M13 2H6M13 2V9" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          <span>Indicar</span>
+        </button>
+        <button className={`${styles.mobileNavItem} ${view === 'comissoes' ? styles.active : ''}`} onClick={() => setView('comissoes')}>
+          <svg width="20" height="20" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="6" stroke="currentColor" strokeWidth="1.3"/><path d="M7.5 4v3l2 2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
+          <span>Comissões</span>
+        </button>
+        <button className={`${styles.mobileNavItem} ${view === 'ranking' ? styles.active : ''}`} onClick={() => setView('ranking')}>
+          <svg width="20" height="20" viewBox="0 0 15 15" fill="none"><path d="M3 13V8M7.5 13V3M12 13V6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
+          <span>Ranking</span>
+        </button>
+        <button className={`${styles.mobileNavItem} ${view === 'perfil' ? styles.active : ''}`} onClick={() => setView('perfil')}>
+          <svg width="20" height="20" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="5" r="2.5" stroke="currentColor" strokeWidth="1.3"/><path d="M2 13c0-3 2.5-5 5.5-5s5.5 2 5.5 5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
+          <span>Perfil</span>
+        </button>
+      </nav>
+
       {/* Main */}
       <div className={styles.main}>
         <div className={styles.topbar}>

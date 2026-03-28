@@ -161,3 +161,36 @@ footer {
   border-radius: 100px; font-size: 11px; font-weight: 600;
   letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 18px;
 }
+/* ══════════════════════════════════════════
+   MOBILE RESPONSIVE — iPhone / ≤768px
+   ══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Navbar */
+  .nav-pill {
+    padding: 14px 20px;
+  }
+  .nav-links { display: none; }
+  .nav-cta .btn-ghost { display: none; }
+  .nav-cta .btn-primary { padding: 8px 14px; font-size: 13px; }
+  .nav-pill.scrolled {
+    max-width: calc(100% - 24px);
+    padding: 10px 16px;
+  }
+
+  /* Footer */
+  footer { padding: 48px 24px 28px; }
+  .footer-top {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-pill { padding: 12px 16px; }
+  .footer-top { grid-template-columns: 1fr; gap: 28px; }
+}

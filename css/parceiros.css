@@ -448,3 +448,46 @@ body { background: var(--white); }
   margin-left: auto;
   margin-right: auto;
 }
+
+/* ══════════════════════════════════════════
+   MOBILE RESPONSIVE — iPhone / ≤768px
+   ══════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .p-container { padding: 0 20px; }
+
+  /* Hero */
+  .p-hero { padding: 96px 20px 64px; min-height: auto; }
+  .p-hero-headline { white-space: normal; font-size: clamp(36px, 10vw, 56px); letter-spacing: -1.5px; }
+  .p-hero-actions { flex-direction: column; align-items: stretch; gap: 10px; }
+  .btn-cta-pill, .btn-outline-pill { width: 100%; justify-content: center; }
+
+  /* Tipos */
+  .p-tipos { padding: 64px 0; }
+  .p-tipos-grid { grid-template-columns: 1fr; gap: 14px; }
+
+  /* Cat grid */
+  .p-cat-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* Form section */
+  .p-form-grid { grid-template-columns: 1fr; gap: 40px; }
+  .p-form-row { grid-template-columns: 1fr; }
+
+  /* Vendedor section */
+  .p-vendedor-section { padding: 64px 20px; }
+
+  /* FAQ */
+  .p-faq { padding: 64px 0; }
+
+  /* CTA */
+  .p-cta-section { padding: 0 20px 80px; }
+  .p-cta-headline { font-size: clamp(28px, 8vw, 44px); }
+
+  /* Btn gold */
+  .btn-cta-gold { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 480px) {
+  .p-tipos-grid { grid-template-columns: 1fr; }
+  .p-cat-grid { grid-template-columns: 1fr; }
+}

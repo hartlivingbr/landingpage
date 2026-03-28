@@ -1529,3 +1529,91 @@
 .btn-cta-gold:hover {
   box-shadow: 0 8px 32px rgba(216,219,142,0.25);
 }
+/* ══════════════════════════════════════════
+   MOBILE RESPONSIVE — iPhone / ≤768px
+   ══════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  /* Hero */
+  .hero {
+    padding: 0 20px;
+    min-height: auto;
+  }
+  .hero-content {
+    padding: 100px 0 40px;
+    align-items: flex-start;
+  }
+  .hero-headline {
+    font-size: clamp(32px, 9vw, 48px);
+    letter-spacing: -1px;
+  }
+  .hero-sub { font-size: 15px; }
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .hero-actions .btn-cta,
+  .hero-actions .btn-secondary {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* Hide browser mockup on mobile — too small to be useful */
+  .hero-dashboard-area { display: none; }
+  .fosco-viewport { display: none; }
+
+  /* Como Funciona */
+  .section-como-funciona { padding: 64px 20px; }
+  .como-header { margin-bottom: 48px; }
+  .como-step {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 16px 0;
+  }
+  .como-step.reverse { direction: ltr; }
+  .step-visual { order: -1; }
+
+  /* Gestão section */
+  .section-gestao { padding: 64px 20px; }
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .feature-card { padding: 24px 20px; }
+
+  /* Generic sections with 60px padding */
+  .section-cta-final,
+  [class*="section-"] { padding-left: 20px !important; padding-right: 20px !important; }
+
+  /* CTA section */
+  .section-cta-final { padding: 80px 20px 160px; }
+
+  /* Linha section */
+  .section-linha { padding: 64px 0; }
+  .linha-header { padding: 0 20px; margin-bottom: 40px; }
+
+  /* Slider cards — horizontal scroll on mobile */
+  .sl-cards,
+  [class*="sl-cards"] {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 16px;
+    gap: 12px;
+  }
+  .sl-card,
+  [class*="sl-card"] {
+    scroll-snap-align: start;
+    min-width: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-content { padding: 90px 0 32px; }
+  .section-como-funciona { padding: 48px 16px; }
+  .section-gestao { padding: 48px 16px; }
+  .linha-header { padding: 0 16px; }
+  .features-grid { gap: 10px; }
+}

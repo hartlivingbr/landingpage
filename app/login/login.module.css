@@ -326,3 +326,23 @@
   opacity: .9;
   object-fit: contain;
 }
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  .body {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    overflow: auto;
+  }
+  .LP {
+    flex: 0 0 auto;
+    width: 100%;
+    padding: 60px 24px 40px;
+    min-height: auto;
+  }
+  .back { top: 20px; left: 20px; }
+  .RP { display: none; }
+  .FC { max-width: 100%; }
+  .h1 { font-size: 26px; }
+}
