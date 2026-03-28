@@ -5,7 +5,7 @@
 
 /* ── RESET & BASE ── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 body {
   font-family: 'DM Sans', sans-serif;
   color: var(--text);
@@ -167,11 +167,12 @@ footer {
 @media (max-width: 768px) {
   /* Navbar */
   .nav-pill {
-    padding: 14px 20px;
+    padding: 14px 16px;
+    overflow: hidden;
   }
   .nav-links { display: none; }
   .nav-cta .btn-ghost { display: none; }
-  .nav-cta .btn-primary { padding: 8px 14px; font-size: 13px; }
+  .nav-cta .btn-primary { padding: 7px 12px; font-size: 12px; white-space: nowrap; }
   .nav-pill.scrolled {
     max-width: calc(100% - 24px);
     padding: 10px 16px;

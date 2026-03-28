@@ -1535,10 +1535,11 @@
 
 @media (max-width: 768px) {
   /* Navbar — override index.css redefinition */
-  .nav-pill { padding: 14px 20px; }
+  .nav-pill { padding: 14px 16px; overflow: hidden; }
   .nav-links { display: none !important; }
   .nav-cta .btn-ghost { display: none !important; }
-  .nav-pill.scrolled { max-width: calc(100% - 24px); padding: 10px 16px; }
+  .nav-cta .btn-primary { padding: 7px 12px; font-size: 12px; white-space: nowrap; }
+  .nav-pill.scrolled { max-width: calc(100% - 24px); padding: 10px 14px; }
 
   /* Hero */
   .hero {
@@ -1547,13 +1548,14 @@
   }
   .hero-content {
     padding: 100px 0 40px;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
   }
   .hero-headline {
-    font-size: clamp(32px, 9vw, 48px);
+    font-size: clamp(30px, 8vw, 44px);
     letter-spacing: -1px;
   }
-  .hero-sub { font-size: 15px; }
+  .hero-sub { font-size: 15px; max-width: 320px; }
   .hero-actions {
     flex-direction: column;
     align-items: stretch;
