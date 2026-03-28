@@ -104,12 +104,28 @@ function CadastroForm() {
     })
 
     if (!error) {
+      // Supabase retorna identities=[] quando o e-mail já existe (comportamento
+      // de segurança — finge que funcionou mas não envia e-mail).
+      // Isso acontece tanto para contas Google quanto email/senha existentes.
+      if (data.user && (data.user.identities?.length === 0)) {
+        setLoading(false)
+        setMsg({
+          text: 'Este e-mail já tem uma conta cadastrada. Faça login normalmente ou clique em "Esqueci minha senha" para recuperar o acesso.',
+          type: 'e',
+        })
+        return
+      }
       setConfirmedEmail(email)
       setConfirmed(true)
       return
     }
 
-    if (error.message === 'User already registered') {
+    // Erro explícito de e-mail duplicado (ocorre quando "Confirm email" está desativado)
+    if (
+      error.message === 'User already registered' ||
+      error.message.includes('already registered') ||
+      error.message.includes('already been registered')
+    ) {
       await adicionarPerfilExistente(email, password, { fname, lname, phone, isCor, creci, imob, refCode })
       return
     }
@@ -197,9 +213,12 @@ function CadastroForm() {
             <div className={styles.confirmBox}>
               <p>
                 <strong>Próximo passo:</strong> Abra seu e-mail, clique em{' '}
-                <strong>&ldquo;Confirmar meu e-mail&rdquo;</strong> e volte para entrar no dashboard.
+                <strong>&ldquo;Confirmar meu e-mail&rdquo;</strong> e você será redirecionado automaticamente para o dashboard.
                 <br /><br />
                 Não encontrou? Verifique <strong>Spam</strong> ou <strong>Promoções</strong>.
+                <br /><br />
+                <strong style={{ color: '#7A5200' }}>⚠️ Se você já tem conta pelo Google</strong> com este e-mail,{' '}
+                <a href="/login" style={{ color: '#2D5A27', fontWeight: 700 }}>faça login com o Google</a> em vez de confirmar o e-mail.
               </p>
             </div>
             <a href="/login" className={styles.btn} style={{ display: 'block', textAlign: 'center', textDecoration: 'none' }}>
