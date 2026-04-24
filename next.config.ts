@@ -29,6 +29,7 @@ const nextConfig: NextConfig = {
       // Public static pages (served from /public)
       { source: '/',            destination: '/index.html',       permanent: false },
       { source: '/parceiros',   destination: '/parceiros.html',   permanent: false },
+      { source: '/websummit',   destination: '/websummit.html',   permanent: false },
       { source: '/termos',      destination: '/termos.html',      permanent: false },
       { source: '/privacidade', destination: '/privacidade.html', permanent: false },
       { source: '/cookies',     destination: '/cookies.html',     permanent: false },

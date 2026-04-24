@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta http-equiv="X-Content-Type-Options" content="nosniff"/>
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Web Summit — Hart</title>
+<meta name="description" content="A infraestrutura do investidor imobiliário. A Hart conecta incorporadoras de São Paulo a uma rede nacional de corretores — transformando estoque parado em vendas e vendas em receita recorrente."/>
+<link rel="icon" type="image/x-icon" href="images/favicon.ico"/>
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/global.css"/>
+<link rel="stylesheet" href="css/websummit.css"/>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav-wrapper">
+  <nav class="nav-pill" id="navbar">
+    <div class="logo"><a href="index.html"><img src="images/Hart_Tipografico_04.png" alt="Hart"/></a></div>
+    <ul class="nav-links">
+      <li><a href="index.html#gestao">Gestão</a></li>
+      <li><a href="index.html#linha">Mobília</a></li>
+      <li><a href="parceiros.html">Parceiros</a></li>
+      <li><a href="websummit.html" class="active">Web Summit</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="#lista-espera" class="btn-ghost">Acesso Antecipado</a>
+    </div>
+  </nav>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section class="ws-hero">
+  <canvas id="heroParticles" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
+  <div class="ws-hero-grid">
+    <div class="ws-hero-left" data-animate>
+      <div class="ws-hero-tag">
+        <span class="ws-hero-tag-dot"></span>
+        Pré-lançamento · Acesso Exclusivo
+      </div>
+      <h1 class="ws-hero-headline">Destravando o <em>capital imobiliário</em> do Brasil.</h1>
+      <p class="ws-hero-sub">A Hart conecta incorporadoras de São Paulo a uma rede nacional de corretores — transformando estoque parado em vendas, e vendas em receita recorrente.</p>
+      <div class="ws-hero-actions">
+        <a href="#lista-espera" class="btn-cta-pill">
+          Garantir acesso antecipado
+          <span class="pill-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+        </a>
+        <a href="#solucao" class="btn-outline-pill">Como funciona</a>
+      </div>
+    </div>
+    <div class="ws-hero-right" data-animate data-delay="2">
+      <div class="ws-hero-bg-letter">H</div>
+      <div class="ws-hero-card">
+        <div class="ws-hero-card-label">Plataforma Hart · Visão geral</div>
+        <div class="ws-hero-stat">R$ 6,4 B</div>
+        <div class="ws-hero-stat-label">em estoque imobiliário endereçável</div>
+        <div class="ws-hero-divider"></div>
+        <div class="ws-hero-metrics">
+          <div class="ws-metric">
+            <div class="ws-metric-num">180+</div>
+            <div class="ws-metric-label">Corretores na rede</div>
+          </div>
+          <div class="ws-metric">
+            <div class="ws-metric-num">12</div>
+            <div class="ws-metric-label">Incorporadoras parceiras</div>
+          </div>
+          <div class="ws-metric">
+            <div class="ws-metric-num">8</div>
+            <div class="ws-metric-label">Estados atendidos</div>
+          </div>
+          <div class="ws-metric">
+            <div class="ws-metric-num">90d</div>
+            <div class="ws-metric-label">Ativação média</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROBLEMA ═══ -->
+<section class="ws-problem">
+  <div class="ws-container">
+    <div class="ws-section-header" data-animate>
+      <div class="section-badge ws-badge-gold">O Problema</div>
+      <h2 class="ws-section-title">Onde o <em>estoque</em> encontra<br>o capital ocioso.</h2>
+    </div>
+
+    <div class="ws-problem-grid">
+      <div class="ws-problem-left" data-animate>
+        <p class="ws-section-body">O mercado imobiliário brasileiro tem um paradoxo estrutural: estoque concentrado em grandes centros de um lado, capital investidor pulverizado pelo país do outro — sem infraestrutura eficiente para conectar os dois.</p>
+
+        <div class="ws-problem-quote">
+          <p>Estoque parado em São Paulo. Capital esperando em Cuiabá. O problema nunca foi o imóvel — foi sempre a distribuição.</p>
+        </div>
+      </div>
+
+      <div class="ws-problem-right">
+        <div class="ws-problem-item" data-animate data-delay="1">
+          <h3>Estoque concentrado</h3>
+          <p>Incorporadoras de São Paulo dependem de canais locais, limitados e caros para escoar unidades.</p>
+        </div>
+        <div class="ws-problem-item" data-animate data-delay="2">
+          <h3>Capital sem acesso</h3>
+          <p>Investidores do interior buscam ativos de qualidade em São Paulo, mas não têm informação, acesso ou distribuição.</p>
+        </div>
+        <div class="ws-problem-item" data-animate data-delay="3">
+          <h3>Canais ineficientes</h3>
+          <p>A intermediação tradicional é cara, lenta e gera atrito em todas as pontas da cadeia.</p>
+        </div>
+        <div class="ws-problem-item" data-animate data-delay="4">
+          <h3>Operação abandonada</h3>
+          <p>Após a venda, o investidor fica sozinho para implementar, mobiliar e operar — perdendo rendimento e tempo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ INSIGHT ═══ -->
+<section class="ws-insight">
+  <div class="ws-container" data-animate>
+    <div class="section-badge">A Visão</div>
+    <h2 class="ws-section-title">Entendemos que o problema<br>não é o imóvel. É a <em>distribuição.</em></h2>
+    <p class="ws-section-body">Quem controla a distribuição do ativo imobiliário, controla o fluxo de investimento. A Hart foi construída em torno desse princípio.</p>
+    <p class="ws-insight-highlight">"Começamos distribuindo ativos.<br>E terminamos organizando o capital que gira em torno deles."</p>
+  </div>
+</section>
+
+<!-- ═══ SOLUÇÃO ═══ -->
+<section class="ws-solution" id="solucao">
+  <div class="ws-container">
+    <div class="ws-solution-grid">
+      <div class="ws-solution-copy" data-animate>
+        <div class="section-badge">A Solução</div>
+        <h2 class="ws-section-title">A plataforma que conecta o Brasil ao mercado imobiliário de <em>São Paulo.</em></h2>
+        <p class="ws-section-body">A Hart cria uma força de vendas nacional para incorporadoras — sem custo fixo — enquanto oferece ao investidor do interior acesso, suporte e gestão completa do seu ativo.</p>
+
+        <div class="ws-solution-steps">
+          <div class="ws-step" data-animate data-delay="1">
+            <div class="ws-step-num">01</div>
+            <div class="ws-step-content">
+              <h3>Incorporadora publica portfólio</h3>
+              <p>Unidades disponíveis são listadas na plataforma Hart com toda a inteligência comercial necessária.</p>
+            </div>
+          </div>
+          <div class="ws-step" data-animate data-delay="2">
+            <div class="ws-step-num">02</div>
+            <div class="ws-step-content">
+              <h3>Corretor em qualquer estado acessa e vende</h3>
+              <p>O corretor em Cuiabá, Londrina ou Blumenau apresenta o portfólio ao cliente e executa a venda com suporte Hart.</p>
+            </div>
+          </div>
+          <div class="ws-step" data-animate data-delay="3">
+            <div class="ws-step-num">03</div>
+            <div class="ws-step-content">
+              <h3>Hart ativa o imóvel após a compra</h3>
+              <p>Implementação, mobiliário e operação em plataformas de curta locação — tudo gerenciado pela Hart.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ws-solution-visual" data-animate data-delay="2">
+        <div class="ws-flow-title">Fluxo da plataforma</div>
+        <div class="ws-flow-nodes">
+          <div class="ws-flow-node active">
+            <div class="ws-flow-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
+            </div>
+            <div class="ws-flow-node-text">
+              <h4>Incorporadora (SP)</h4>
+              <p>Publica portfólio na plataforma</p>
+            </div>
+          </div>
+          <div class="ws-flow-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+          </div>
+          <div class="ws-flow-node active">
+            <div class="ws-flow-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <div class="ws-flow-node-text">
+              <h4>Plataforma Hart</h4>
+              <p>Distribuição nacional inteligente</p>
+            </div>
+          </div>
+          <div class="ws-flow-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+          </div>
+          <div class="ws-flow-node active">
+            <div class="ws-flow-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div class="ws-flow-node-text">
+              <h4>Corretor parceiro (BR)</h4>
+              <p>Cuiabá · Londrina · Blumenau · +24 estados</p>
+            </div>
+          </div>
+          <div class="ws-flow-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+          </div>
+          <div class="ws-flow-node active">
+            <div class="ws-flow-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <div class="ws-flow-node-text">
+              <h4>Investidor compra</h4>
+              <p>Acesso a ativos de qualidade em SP</p>
+            </div>
+          </div>
+          <div class="ws-flow-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+          </div>
+          <div class="ws-flow-node active ws-flow-node-final">
+            <div class="ws-flow-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.74-8z"/></svg>
+            </div>
+            <div class="ws-flow-node-text">
+              <h4>Hart opera o ativo</h4>
+              <p>Mobiliário · Short-stay · Receita recorrente</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MODELO ═══ -->
+<section class="ws-model">
+  <div class="ws-container">
+    <div class="ws-section-header" data-animate>
+      <div class="section-badge">Modelo de Negócio</div>
+      <h2 class="ws-section-title">Da venda à <em>receita recorrente:</em><br>o modelo de sucesso da Hart.</h2>
+      <p class="ws-section-sub">A venda é apenas o início. Após a compra, a Hart ativa o imóvel e transforma um evento pontual em uma operação contínua e rentável.</p>
+    </div>
+
+    <div class="ws-model-grid">
+      <div class="ws-model-card" data-animate data-delay="1">
+        <div class="ws-model-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        </div>
+        <div class="ws-model-tag">Alcance</div>
+        <h3>Distribuição nacional</h3>
+        <p>Força de vendas em todo o Brasil sem custo fixo para a incorporadora. Mais alcance, menos overhead — o canal que o mercado nunca teve.</p>
+      </div>
+      <div class="ws-model-card ws-model-card-destaque" data-animate data-delay="2">
+        <div class="ws-model-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div class="ws-model-tag">Ativação</div>
+        <h3>Ativação completa</h3>
+        <p>Implementação, mobiliário de design e cadastro nas principais plataformas de curta locação. O imóvel chega ao mercado pronto para rentabilizar.</p>
+      </div>
+      <div class="ws-model-card" data-animate data-delay="3">
+        <div class="ws-model-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </div>
+        <div class="ws-model-tag">Operação</div>
+        <h3>Gestão ativa</h3>
+        <p>Administração completa do imóvel nas plataformas de curta locação. O investidor recebe os resultados — sem se preocupar com operação.</p>
+      </div>
+    </div>
+
+    <div class="ws-model-concept" data-animate>
+      <p>"Distribuição escala a venda.<br><em>Operação captura o valor.</em>"</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ VISÃO ═══ -->
+<section class="ws-vision">
+  <div class="ws-vision-bg">H</div>
+  <div class="ws-container">
+    <div class="ws-vision-grid">
+      <div class="ws-vision-copy" data-animate>
+        <div class="section-badge ws-badge-gold">A Visão</div>
+        <h2 class="ws-section-title ws-section-title-light">Construindo a <em>infraestrutura financeira</em> do investidor imobiliário.</h2>
+        <p class="ws-section-body ws-section-body-light">A Hart captura toda a jornada — da originação à operação. Não somos apenas uma plataforma de vendas. Somos a infraestrutura em torno da qual o capital imobiliário brasileiro começa a se organizar.</p>
+      </div>
+
+      <div class="ws-vision-milestones" data-animate data-delay="2">
+        <div class="ws-milestone">
+          <div class="ws-milestone-dot active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="ws-milestone-text">
+            <h4>Plataforma de distribuição</h4>
+            <p>Conexão incorporadoras ↔ rede nacional de corretores</p>
+          </div>
+        </div>
+        <div class="ws-milestone">
+          <div class="ws-milestone-dot active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="ws-milestone-text">
+            <h4>Operação pós-venda</h4>
+            <p>Mobiliário, implementação e gestão de short-stay</p>
+          </div>
+        </div>
+        <div class="ws-milestone">
+          <div class="ws-milestone-dot">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+          <div class="ws-milestone-text">
+            <h4>Infraestrutura financeira</h4>
+            <p>Produtos financeiros em torno dos ativos operados</p>
+          </div>
+        </div>
+        <div class="ws-milestone">
+          <div class="ws-milestone-dot">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+          <div class="ws-milestone-text">
+            <h4>Capital organizado</h4>
+            <p>O investidor imobiliário gerencia todo o ciclo pela Hart</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA / FORM ═══ -->
+<section class="ws-form-section" id="lista-espera">
+  <div class="ws-container">
+    <div class="ws-form-grid">
+      <div class="ws-form-copy" data-animate>
+        <div class="section-badge">Acesso Antecipado</div>
+        <h2 class="ws-section-title ws-section-title-left">Pronto para expandir <em>seu alcance?</em></h2>
+        <p class="ws-form-copy-sub">A Hart está em pré-lançamento. Entre para a lista de espera e garanta acesso exclusivo antes da abertura ao público — com condições especiais de fundadores.</p>
+        <div class="ws-trust-list">
+          <div class="ws-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Resposta em até 48 horas úteis
+          </div>
+          <div class="ws-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Condições especiais para fundadores
+          </div>
+          <div class="ws-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Reunião de alinhamento sem compromisso
+          </div>
+          <div class="ws-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Sem spam — apenas comunicações do lançamento
+          </div>
+        </div>
+      </div>
+
+      <div class="ws-form-card" data-animate data-delay="2">
+        <div class="ws-form-card-title">Entrar na lista de espera</div>
+        <div class="ws-form-card-sub">Selecione o seu perfil para que possamos direcionar da melhor forma.</div>
+
+        <div class="ws-tipo-toggle">
+          <button class="ws-tipo-btn active" type="button" data-tipo="incorporadora">Incorporadora</button>
+          <button class="ws-tipo-btn" type="button" data-tipo="corretor">Corretor</button>
+          <button class="ws-tipo-btn" type="button" data-tipo="investidor">Investidor</button>
+        </div>
+
+        <div class="ws-form-row">
+          <div class="ws-form-group">
+            <label class="ws-form-label" for="ws-nome">Nome completo</label>
+            <input class="ws-form-input" id="ws-nome" type="text" placeholder="Seu nome" autocomplete="name"/>
+          </div>
+          <div class="ws-form-group">
+            <label class="ws-form-label" for="ws-email">E-mail profissional</label>
+            <input class="ws-form-input" id="ws-email" type="email" placeholder="voce@empresa.com" autocomplete="email"/>
+          </div>
+        </div>
+
+        <div class="ws-form-row">
+          <div class="ws-form-group">
+            <label class="ws-form-label" for="ws-tel">WhatsApp</label>
+            <input class="ws-form-input" id="ws-tel" type="tel" placeholder="(11) 9 0000-0000" autocomplete="tel"/>
+          </div>
+          <div class="ws-form-group">
+            <label class="ws-form-label" for="ws-empresa" id="ws-label-empresa">Incorporadora</label>
+            <input class="ws-form-input" id="ws-empresa" type="text" placeholder="Nome da incorporadora"/>
+          </div>
+        </div>
+
+        <div class="ws-form-group">
+          <label class="ws-form-label" for="ws-estado">Estado de atuação</label>
+          <div class="ws-select-wrap">
+            <select class="ws-form-input ws-form-select" id="ws-estado">
+              <option value="" disabled selected>Selecione um estado</option>
+              <option>São Paulo</option>
+              <option>Rio de Janeiro</option>
+              <option>Minas Gerais</option>
+              <option>Paraná</option>
+              <option>Santa Catarina</option>
+              <option>Rio Grande do Sul</option>
+              <option>Mato Grosso</option>
+              <option>Mato Grosso do Sul</option>
+              <option>Goiás</option>
+              <option>Distrito Federal</option>
+              <option>Bahia</option>
+              <option>Pernambuco</option>
+              <option>Ceará</option>
+              <option>Outro</option>
+            </select>
+            <svg class="ws-select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+
+        <button class="ws-btn-submit" type="button" id="ws-submit-btn">
+          <span class="ws-btn-label">Garantir acesso antecipado</span>
+          <span class="ws-btn-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </span>
+        </button>
+        <p class="ws-form-note">Ao enviar, você será direcionado para agendar uma conversa com nosso time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section class="ws-faq">
+  <div class="ws-container">
+    <div class="ws-faq-inner">
+      <div class="ws-section-header" data-animate>
+        <div class="section-badge">Dúvidas Frequentes</div>
+        <h2 class="ws-section-title">Respondemos as principais <em>dúvidas.</em></h2>
+      </div>
+
+      <div class="ws-faq-list" data-animate>
+        <div class="ws-faq-item">
+          <div class="ws-faq-q">Para quem é a Hart?<span class="ws-faq-icon">+</span></div>
+          <div class="ws-faq-a"><div>A Hart foi desenvolvida para três públicos: incorporadoras de São Paulo que buscam ampliar sua força de vendas, corretores e imobiliárias em todo o Brasil que desejam acessar o portfólio de SP, e investidores imobiliários que querem rentabilizar ativos sem operação.</div></div>
+        </div>
+        <div class="ws-faq-item">
+          <div class="ws-faq-q">Como funciona a comissão para corretores?<span class="ws-faq-icon">+</span></div>
+          <div class="ws-faq-a"><div>Os corretores parceiros recebem comissão sobre cada venda realizada através da plataforma. O modelo é detalhado durante o processo de onboarding — as condições são competitivas com o mercado e totalmente transparentes.</div></div>
+        </div>
+        <div class="ws-faq-item">
+          <div class="ws-faq-q">Qual é o rendimento esperado para o investidor?<span class="ws-faq-icon">+</span></div>
+          <div class="ws-faq-a"><div>Com base nos dados de mercado (DataZap e AirDNA), o modelo Hart projeta um yield médio de 1,0% a 1,2% ao mês para imóveis operados em short-stay, já considerando todos os custos de operação.</div></div>
+        </div>
+        <div class="ws-faq-item">
+          <div class="ws-faq-q">A Hart cuida de tudo após a compra?<span class="ws-faq-icon">+</span></div>
+          <div class="ws-faq-a"><div>Sim. Após a aquisição do imóvel, a Hart é responsável por implementação, mobiliário, listagem nas plataformas de aluguel de curta duração, gestão de hóspedes e repasse de resultados ao investidor.</div></div>
+        </div>
+        <div class="ws-faq-item">
+          <div class="ws-faq-q">Quando a plataforma será lançada?<span class="ws-faq-icon">+</span></div>
+          <div class="ws-faq-a"><div>A Hart está em fase de pré-lançamento. Os contatos da lista de espera serão os primeiros a ter acesso e poderão participar das condições especiais de fundadores.</div></div>
+        </div>
+        <div class="ws-faq-item">
+          <div class="ws-faq-q">O que diferencia a Hart de uma imobiliária tradicional?<span class="ws-faq-icon">+</span></div>
+          <div class="ws-faq-a"><div>A Hart não é uma imobiliária — é uma plataforma de infraestrutura. Ela distribui ativos em escala nacional e, diferente de uma imobiliária, continua operando o imóvel após a venda, gerando receita recorrente para todas as partes.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA FINAL ═══ -->
+<section class="ws-cta-section">
+  <div class="cta-eyebrow" data-animate>Vamos Conversar</div>
+  <h2 class="ws-cta-headline">A infraestrutura do<br><em>investidor imobiliário.</em></h2>
+  <p class="ws-cta-sub">Agende uma conversa com nosso time e entenda como a Hart pode integrar-se ao seu pipeline de distribuição ou de investimento.</p>
+  <a href="https://cal.com/hartbr/reuniao-de-alinhamento" target="_blank" rel="noopener" class="btn-cta-gold">
+    Agendar conversa
+    <span class="btn-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+  </a>
+  <p class="ws-cta-note">Sem compromisso. Resposta em até 24 horas.</p>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span class="logo"><img src="images/Hart_Tipografico_04.png" alt="Hart"/></span>
+      <p class="footer-desc">Gestão de patrimônio imobiliário com eficiência, transparência e resultado.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Empresa</h4>
+      <ul>
+        <li><a href="index.html#gestao">Sobre a Hart</a></li>
+        <li><a href="websummit.html">Web Summit</a></li>
+        <li><a href="https://cal.com/hartbr/reuniao-de-alinhamento" target="_blank" rel="noopener">Contato</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Serviços</h4>
+      <ul>
+        <li><a href="index.html#gestao">Gestão Imobiliária</a></li>
+        <li><a href="index.html#linha">Ready-to-Live</a></li>
+        <li><a href="parceiros.html">Parceiros</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="privacidade.html">Privacidade</a></li>
+        <li><a href="termos.html">Termos de Uso</a></li>
+        <li><a href="cookies.html">Cookies</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 HART. Todos os direitos reservados.</span>
+    <div class="social-links">
+      <a href="https://linkedin.com/company/hartbr" target="_blank" rel="noopener" class="social-link">in</a>
+      <a href="https://instagram.com/hartbr" target="_blank" rel="noopener" class="social-link">ig</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/websummit.js"></script>
+</body>
+</html>
