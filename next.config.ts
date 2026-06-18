@@ -35,6 +35,13 @@ const nextConfig: NextConfig = {
       // Proprietário (still on static HTML)
       { source: '/login/proprietario',    destination: '/login-proprietario.html',    permanent: false },
       { source: '/cadastro/proprietario', destination: '/cadastro-proprietario.html', permanent: false },
+      // Corretor (parceiro/vendedor) → portal unificado corretores.hartliving.com.br
+      { source: '/login-vendedor.html',     destination: 'https://corretores.hartliving.com.br/entrar',   permanent: false },
+      { source: '/cadastro-vendedor.html',  destination: 'https://corretores.hartliving.com.br/cadastro',  permanent: false },
+      { source: '/dashboard-vendedor.html', destination: 'https://corretores.hartliving.com.br/dashboard', permanent: false },
+      { source: '/login',                   destination: 'https://corretores.hartliving.com.br/entrar',   permanent: false },
+      { source: '/cadastro',                destination: 'https://corretores.hartliving.com.br/cadastro',  permanent: false },
+      { source: '/dashboard',               destination: 'https://corretores.hartliving.com.br/dashboard', permanent: false },
     ]
   },
 }
